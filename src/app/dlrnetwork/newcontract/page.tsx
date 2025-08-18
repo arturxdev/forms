@@ -10,10 +10,24 @@ import { ThankYouScreen } from "@/components/formComponents/thankYouScreen";
 import { useState } from "react";
 import { toast } from "sonner";
 
+interface FormData {
+  nombre: string;
+  apellido: string;
+  email: string;
+  telefono: string;
+  identificacion: string;
+  estrato: string;
+  direccion: string;
+  direccionServicio: string;
+  departamento: string;
+  municipio: string;
+  paquete: string;
+}
+
 export default function ContactForm() {
   const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState<any>(null);
+  const [formData, setFormData] = useState<FormData | null>(null);
 
   // Opciones para el select de paquetes
   const paquetes = [
@@ -62,7 +76,7 @@ export default function ContactForm() {
     });
 
     // Obtener datos del formulario para el alert (sin el archivo)
-    const data = Object.fromEntries(formData);
+    const data = Object.fromEntries(formData) as unknown as FormData;
     console.log(data);
 
     // Guardar los datos del formulario y mostrar pantalla de agradecimiento

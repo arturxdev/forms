@@ -29,25 +29,6 @@ export const FormPhone: React.FC<FormPhoneProps> = ({
     return phoneNumber.replace(/[^\d+]/g, "");
   };
 
-  // Función para formatear el número de teléfono
-  const formatPhoneNumber = (phoneNumber: string): string => {
-    const cleaned = cleanPhoneNumber(phoneNumber);
-
-    // Si no tiene código de país, agregarlo
-    if (!cleaned.startsWith("+") && !cleaned.startsWith("00")) {
-      return `${countryCode} ${cleaned}`;
-    }
-
-    // Formatear números internacionales
-    if (cleaned.startsWith("+")) {
-      const code = cleaned.substring(0, 3); // +57, +1, +44, etc.
-      const number = cleaned.substring(3);
-      return `${code} ${number}`;
-    }
-
-    return cleaned;
-  };
-
   // Función para validar número de teléfono
   const validatePhoneNumber = (
     phoneNumber: string

@@ -16,13 +16,6 @@ export const FormEmail: React.FC<FormEmailProps> = ({
   const [isValid, setIsValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Función para validar email
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  // Función para validar email más estricta
   const validateEmailStrict = (
     email: string
   ): { isValid: boolean; message: string } => {
