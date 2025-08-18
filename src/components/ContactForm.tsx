@@ -46,13 +46,14 @@ export default function ContactForm() {
       <div className="w-full max-w-4xl rounded-2xl shadow-xl border border-zinc-100 overflow-hidden bg-white">
         {/* Header con imagen */}
         <div className="h-40 w-full overflow-hidden">
-          <Image
+          <img
             src="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop"
             alt="Encabezado minimalista"
             className="h-full w-full object-cover"
             width={1600}
             height={400}
-            priority
+            loading="eager"
+            style={{ display: "block" }}
           />
         </div>
 
