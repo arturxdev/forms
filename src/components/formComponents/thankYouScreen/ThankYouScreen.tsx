@@ -31,14 +31,6 @@ export default function ThankYouScreen({
         <p className="mt-2 text-zinc-500 text-lg">{description}</p>
 
         {/* Botón principal (opcional) */}
-        <div className="mt-8 flex items-center justify-center gap-3">
-          <a
-            href="#"
-            className="inline-flex items-center justify-center rounded-full border border-zinc-200 bg-white px-5 py-3 text-sm font-medium text-zinc-900 shadow-sm hover:bg-zinc-50 active:opacity-90"
-          >
-            Volver al inicio
-          </a>
-        </div>
 
         {/* Pie minimal */}
         <p className="mt-8 text-xs text-zinc-400">
