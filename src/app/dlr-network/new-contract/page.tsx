@@ -9,6 +9,7 @@ import { FormEmail } from "@/components/formComponents/formEmail";
 import { ThankYouScreen } from "@/components/formComponents/thankYouScreen";
 import { useState } from "react";
 import { toast } from "sonner";
+import { FormRadioGroup } from "@/components/formComponents/formRadioGroup";
 
 interface FormData {
   nombre: string;
@@ -244,13 +245,13 @@ export default function ContactForm() {
             </div>
 
             {/* Paquete a contratar (ancho completo) */}
-            <FormSelect
+            <FormRadioGroup
               id="paquete"
               name="paquete"
-              label="Paquete a contratar"
+              label="Selecciona tu paquete"
               options={paquetes}
               required
-              placeholder="Selecciona un paquete"
+              description="Elige el plan que mejor se adapte a tus necesidades"
             />
           </div>
 
