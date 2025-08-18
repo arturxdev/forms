@@ -1,5 +1,259 @@
-import ContactForm from "@/components/ContactForm";
+"use client";
 
-export default function NewContractPage() {
-  return <ContactForm />;
+import { Button } from "@/components/ui/button";
+import { FormInput } from "@/components/formComponents/formInput";
+import { FormSelect } from "@/components/formComponents/formSelect";
+import { FileUploader } from "@/components/formComponents/fileUploader";
+import { FormPhone } from "@/components/formComponents/formPhone";
+import { FormEmail } from "@/components/formComponents/formEmail";
+import { ThankYouScreen } from "@/components/formComponents/thankYouScreen";
+import { useState } from "react";
+import { toast } from "sonner";
+
+export default function ContactForm() {
+  const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formData, setFormData] = useState<any>(null);
+
+  // Opciones para el select de paquetes
+  const paquetes = [
+    { value: "especial", label: "🔸 PLAN ESPECIAL – 15 Mbps – $55,000" },
+    { value: "mini", label: "🔸 PLAN MINI – 17 Mbps – $60,000" },
+    { value: "personal", label: "🔸 PERSONAL – 25 Mbps – $65,000" },
+    {
+      value: "familiar_streaming",
+      label: "🔸 PLAN FAMILIAR Streaming – 27 Mbps – $80,000",
+    },
+    {
+      value: "hogar_duo_streaming",
+      label: "🔸 HOGAR DUO Streaming – 30 Mbps – $130,000",
+    },
+    { value: "duo_mini", label: "🔸 PLAN DUO MINI – 32 Mbps –$65.000" },
+    {
+      value: "duo_mini_dos_casas",
+      label: "🔸 DUO MINI – 34 Mbps – $65,000 DOS CASAS",
+    },
+    {
+      value: "hogar_duo_streaming_dos_casas",
+      label: "🔸 PLAN HOGAR DUO Streaming – 36 Mbps – $130,000 DOS CASAS",
+    },
+    { value: "duplex", label: "🔸 PLAN DUPLEX – 40 Mbps – $100,000" },
+  ];
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const URL =
+      "https://n8n.srv955856.hstgr.cloud/webhook-test/9384b209-5dff-4fce-8d8b-c60f6e1c4944";
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    // Remover el input file del FormData para evitar duplicados
+    formData.delete("comprobante");
+
+    // Agregar solo el archivo del estado si existe
+    if (comprobanteFile) {
+      formData.append("comprobante", comprobanteFile);
+    }
+
+    // Enviar usando FormData para archivos
+    fetch(URL, {
+      method: "POST",
+      body: formData,
+    });
+
+    // Obtener datos del formulario para el alert (sin el archivo)
+    const data = Object.fromEntries(formData);
+    console.log(data);
+
+    // Guardar los datos del formulario y mostrar pantalla de agradecimiento
+    setFormData(data);
+    setIsSubmitted(true);
+
+    toast.success(
+      `¡Gracias, ${data.nombre} ${data.apellido}!\nNos pondremos en contacto a: ${data.email}`
+    );
+  };
+
+  // Si el formulario fue enviado exitosamente, mostrar la pantalla de agradecimiento
+  if (isSubmitted) {
+    return (
+      <ThankYouScreen
+        title={`¡Gracias, ${formData?.nombre} ${formData?.apellido}!`}
+        description="Te notificaremos por medio de WhatsApp de los siguientes pasos"
+      />
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl rounded-2xl shadow-xl border border-zinc-100 overflow-hidden bg-white">
+        {/* Header con imagen */}
+        <div className="h-40 w-full overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop"
+            alt="Encabezado minimalista"
+            className="h-full w-full object-cover"
+            width={1600}
+            height={400}
+            loading="eager"
+            style={{ display: "block" }}
+          />
+        </div>
+
+        {/* Título */}
+        <div className="px-6 pt-6">
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+            Contratación
+          </h1>
+          <p className="text-sm text-zinc-500 mt-1">
+            Información del contratante
+          </p>
+        </div>
+
+        {/* Formulario */}
+        <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-6">
+          {/* Primera fila - Nombre y Apellido */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormInput
+              id="nombre"
+              name="nombre"
+              label="Nombre"
+              type="text"
+              required
+              placeholder="Tu nombre"
+            />
+            <FormInput
+              id="apellido"
+              name="apellido"
+              label="Apellido"
+              type="text"
+              required
+              placeholder="Tu apellido"
+            />
+          </div>
+
+          {/* Segunda fila - Email y Teléfono */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormEmail
+              id="email"
+              name="email"
+              label="Email"
+              required
+              placeholder="tu@correo.com"
+            />
+            <FormPhone
+              id="telefono"
+              name="telefono"
+              label="Teléfono"
+              required
+              placeholder="+57 300 123 4567"
+            />
+          </div>
+
+          {/* Tercera fila - Número de identificación y Estrato */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormInput
+              id="identificacion"
+              name="identificacion"
+              label="Número de identificación"
+              type="text"
+              required
+              placeholder="CC 12345678"
+            />
+            <FormInput
+              id="estrato"
+              name="estrato"
+              label="Estrato"
+              type="text"
+              required
+              placeholder="1, 2, 3, 4, 5, 6"
+            />
+          </div>
+
+          {/* Cuarta fila - Dirección (ancho completo) */}
+          <FormInput
+            id="direccion"
+            name="direccion"
+            label="Dirección"
+            type="text"
+            required
+            placeholder="Calle 123 # 45-67, Ciudad"
+          />
+
+          {/* Quinta fila - Comprobante de pago de luz */}
+          <FileUploader
+            id="comprobante"
+            name="comprobante"
+            label="Comprobante de pago de luz"
+            required
+            accept=".pdf,.jpg,.jpeg,.png"
+            maxSize="10MB"
+            onChange={(file) => setComprobanteFile(file)}
+          />
+
+          {/* Nueva sección - Dirección donde se instalará el servicio */}
+          <div className="border-t border-zinc-200 pt-6">
+            <h2 className="text-xl font-semibold tracking-tight text-zinc-900 mb-6">
+              Dirección donde se instalará el servicio
+            </h2>
+
+            {/* Dirección del servicio (ancho completo) */}
+            <div className="mb-6">
+              <FormInput
+                id="direccionServicio"
+                name="direccionServicio"
+                label="Dirección del servicio"
+                type="text"
+                required
+                placeholder="Calle 123 # 45-67, Ciudad"
+              />
+            </div>
+
+            {/* Departamento y Municipio (2 columnas) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <FormInput
+                id="departamento"
+                name="departamento"
+                label="Departamento"
+                type="text"
+                required
+                placeholder="Ej. Antioquia"
+              />
+              <FormInput
+                id="municipio"
+                name="municipio"
+                label="Municipio"
+                type="text"
+                required
+                placeholder="Ej. Medellín"
+              />
+            </div>
+
+            {/* Paquete a contratar (ancho completo) */}
+            <FormSelect
+              id="paquete"
+              name="paquete"
+              label="Paquete a contratar"
+              options={paquetes}
+              required
+              placeholder="Selecciona un paquete"
+            />
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full rounded-xl bg-zinc-900 text-white py-3 text-sm font-medium tracking-wide hover:opacity-95 active:opacity-90 transition"
+          >
+            Enviar Solicitud
+          </Button>
+
+          {/* Nota de privacidad minimal */}
+          <p className="text-[11px] leading-relaxed text-zinc-500 text-center">
+            Al enviar, aceptas que nos pongamos en contacto con la información
+            proporcionada.
+          </p>
+        </form>
+      </div>
+    </div>
+  );
 }
