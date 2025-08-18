@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { FileUploader } from "@/components/formComponents/fileUploader";
 import { Mail, Flag } from "lucide-react";
 import { useState } from "react";
-import Image from "next/image";
 
 export default function ContactForm() {
   const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
