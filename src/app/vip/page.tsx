@@ -1,5 +1,5 @@
 "use client";
-
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/formComponents/formInput";
 import { FileUploader } from "@/components/formComponents/fileUploader";
@@ -8,7 +8,7 @@ import { FormEmail } from "@/components/formComponents/formEmail";
 import { ThankYouScreen } from "@/components/formComponents/thankYouScreen";
 import { useState } from "react";
 import { toast } from "sonner";
-import { FormRadioGroup } from "@/components/formComponents/formRadioGroup";
+import { FormRadioGroup, FormSelect } from "@/components/formComponents";
 
 interface FormData {
   nombre: string;
@@ -28,30 +28,77 @@ export default function ContactForm() {
   const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState<FormData | null>(null);
+  const [viaje, setViaje] = useState<string>("sd-quito");
+  const [hora, setHora] = useState<string>("");
 
   // Opciones para el select de paquetes
   const paquetes = [
-    { value: "especial", label: "🔸 PLAN ESPECIAL – 15 Mbps – $55,000" },
-    { value: "mini", label: "🔸 PLAN MINI – 17 Mbps – $60,000" },
-    { value: "personal", label: "🔸 PERSONAL – 25 Mbps – $65,000" },
+    { value: "sd-quito", label: "1️⃣ Santo Domingo → Quito" },
+    { value: "quito-sd", label: "2️⃣ Quito → Santo Domingo" },
+    { value: "sd-manta", label: "3️⃣ Santo Domingo → Manta" },
+    { value: "manta-sd", label: "4️⃣ Manta → Santo Domingo" },
+    { value: "sd-gye", label: "5️⃣ Santo Domingo → Guayaquil" },
+    { value: "gye-sd", label: "6️⃣ Guayaquil → Santo Domingo" },
+    { value: "quito-gye", label: "7️⃣ Quito → Guayaquil" },
+    { value: "gye-quito", label: "8️⃣ Guayaquil → Quito" },
+    { value: "quito-manta", label: "9️⃣ Quito → Manta" },
+    { value: "manta-quito", label: "🔟 Manta → Quito" },
+  ];
+  const asientos = [
+    { value: "1", label: "1 Asiento" },
+    { value: "2", label: "2 Asiento " },
+    { value: "3", label: "1 Asiento" },
+  ];
+  // Horarios de la RUTA SANTO DOMINGO A QUITO O VICEVERSA
+  // Elige la hora:
+  const horas = [
+    { value: "4am", label: "4AM", if: ["quito-sd", "sd-quito"] },
     {
-      value: "familiar_streaming",
-      label: "🔸 PLAN FAMILIAR Streaming – 27 Mbps – $80,000",
+      value: "5am",
+      label: "5AM",
+      if: [
+        "gye-quito",
+        "gye-sd",
+        "manta-quito",
+        "manta-sd",
+        "quito-manta",
+        "quito-sd",
+        "sd-gye",
+        "sd-manta",
+        "sd-quito",
+      ],
+    },
+    { value: "6am", label: "6AM", if: ["quito-sd", "sd-quito"] },
+    { value: "7am", label: "7AM", if: ["quito-gye"] },
+    {
+      value: "8am",
+      label: "8AM",
+      if: ["manta-quito", "manta-sd", "quito-sd", "sd-manta", "sd-quito"],
     },
     {
-      value: "hogar_duo_streaming",
-      label: "🔸 HOGAR DUO Streaming – 30 Mbps – $130,000",
+      value: "10am",
+      label: "10AM",
+      if: ["gye-quito", "gye-sd", "quito-sd", "sd-gye", "sd-quito"],
     },
-    { value: "duo_mini", label: "🔸 PLAN DUO MINI – 32 Mbps –$65.000" },
+    { value: "11pm", label: "11PM", if: ["quito-gye"] },
     {
-      value: "duo_mini_dos_casas",
-      label: "🔸 DUO MINI – 34 Mbps – $65,000 DOS CASAS",
+      value: "12pm",
+      label: "12PM",
+      if: ["quito-manta", "quito-sd", "sd-quito"],
+    },
+    { value: "1pm", label: "1PM", if: ["quito-sd", "sd-quito"] },
+    { value: "1:30pm", label: "1:30PM", if: ["quito-gye", "quito-manta"] },
+    {
+      value: "3pm",
+      label: "3PM",
+      if: ["manta-quito", "manta-sd", "quito-sd", "sd-manta", "sd-quito"],
     },
     {
-      value: "hogar_duo_streaming_dos_casas",
-      label: "🔸 PLAN HOGAR DUO Streaming – 36 Mbps – $130,000 DOS CASAS",
+      value: "5pm",
+      label: "5PM",
+      if: ["gye-sd", "manta-sd", "quito-sd", "sd-gye", "sd-manta", "sd-quito"],
     },
-    { value: "duplex", label: "🔸 PLAN DUPLEX – 40 Mbps – $100,000" },
+    { value: "7pm", label: "7PM", if: ["quito-sd", "sd-quito"] },
   ];
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -117,140 +164,113 @@ export default function ContactForm() {
         {/* Título */}
         <div className="px-6 pt-6">
           <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-            Contratación
+            Reserva un viaje
           </h1>
-          <p className="text-sm text-zinc-500 mt-1">
-            Información del contratante
-          </p>
         </div>
 
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-6">
-          {/* Primera fila - Nombre y Apellido */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormInput
-              id="nombre"
-              name="nombre"
-              label="Nombre"
-              type="text"
-              required
-              placeholder="Tu nombre"
-            />
-            <FormInput
-              id="apellido"
-              name="apellido"
-              label="Apellido"
-              type="text"
-              required
-              placeholder="Tu apellido"
-            />
-          </div>
-
-          {/* Segunda fila - Email y Teléfono */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormEmail
-              id="email"
-              name="email"
-              label="Email"
-              required
-              placeholder="tu@correo.com"
-            />
-            <FormPhone
-              id="telefono"
-              name="telefono"
-              label="Teléfono"
-              required
-              placeholder="+57 300 123 4567"
-            />
-          </div>
-
-          {/* Tercera fila - Número de identificación y Estrato */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormInput
-              id="identificacion"
-              name="identificacion"
-              label="Número de identificación"
-              type="text"
-              required
-              placeholder="CC 12345678"
-            />
-            <FormInput
-              id="estrato"
-              name="estrato"
-              label="Estrato"
-              type="text"
-              required
-              placeholder="1, 2, 3, 4, 5, 6"
-            />
-          </div>
-
-          {/* Cuarta fila - Dirección (ancho completo) */}
-          <FormInput
-            id="direccion"
-            name="direccion"
-            label="Dirección"
-            type="text"
-            required
-            placeholder="Calle 123 # 45-67, Ciudad"
-          />
-
-          {/* Quinta fila - Comprobante de pago de luz */}
-          <FileUploader
-            id="comprobante"
-            name="comprobante"
-            label="Comprobante de pago de luz"
-            required
-            accept=".pdf,.jpg,.jpeg,.png"
-            maxSize="10MB"
-            onChange={(file) => setComprobanteFile(file)}
-          />
-
           {/* Nueva sección - Dirección donde se instalará el servicio */}
           <div className="border-t border-zinc-200 pt-6">
-            <h2 className="text-xl font-semibold tracking-tight text-zinc-900 mb-6">
-              Dirección donde se instalará el servicio
-            </h2>
-
-            {/* Dirección del servicio (ancho completo) */}
-            <div className="mb-6">
-              <FormInput
-                id="direccionServicio"
-                name="direccionServicio"
-                label="Dirección del servicio"
-                type="text"
-                required
-                placeholder="Calle 123 # 45-67, Ciudad"
-              />
-            </div>
-
-            {/* Departamento y Municipio (2 columnas) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <FormInput
-                id="departamento"
-                name="departamento"
-                label="Departamento"
-                type="text"
-                required
-                placeholder="Ej. Antioquia"
-              />
-              <FormInput
-                id="municipio"
-                name="municipio"
-                label="Municipio"
-                type="text"
-                required
-                placeholder="Ej. Medellín"
-              />
-            </div>
-
             {/* Paquete a contratar (ancho completo) */}
-            <FormRadioGroup
-              name="paquete"
-              label="Paquete a contratar"
+            <FormSelect
+              id="viaje"
+              name="Viaje"
+              label="🚗 Viaje"
               options={paquetes}
               required
-              description="Elige el plan que mejor se adapte a tus necesidades"
+              value={viaje}
+              onChange={(e) => {
+                const newViaje = e.target.value;
+                setViaje(newViaje);
+                // Reiniciar hora si ya no aplica para el nuevo viaje
+                setHora("");
+              }}
             />
+          </div>
+          <div className="border-zinc-200 pt-6">
+            {/* Paquete a contratar (ancho completo) */}
+            <FormSelect
+              id="hora"
+              name="hora"
+              label="⏰️ Hora del viaje"
+              options={horas}
+              required
+              value={hora}
+              onChange={(e) => setHora(e.target.value)}
+              dependsOnValue={viaje}
+            />
+          </div>
+          <div>
+            {(() => {
+              switch (viaje) {
+                case "sd-quito":
+                case "quito-sd":
+                  return (
+                    <Alert variant="default">
+                      <AlertTitle>Costo del viaje</AlertTitle>
+                      <AlertDescription>
+                        <br />
+                        📍 Quito → $17
+                        <br />
+                        📍 Valles / Carapungo / Calderón / Mitad del Mundo → $20
+                        <br />
+                        ✈️ Aeropuerto Tababela → $35
+                      </AlertDescription>
+                    </Alert>
+                  );
+                case "sd-manta":
+                case "manta-sd":
+                  return (
+                    <Alert variant="default">
+                      <AlertTitle>Costo del viaje</AlertTitle>
+                      <AlertDescription>
+                        ¡El precio por persona es de $25! 💸
+                      </AlertDescription>
+                    </Alert>
+                  );
+                case "gye-sd":
+                case "sd-gye":
+                  return (
+                    <Alert variant="default">
+                      <AlertTitle>Costo del viaje</AlertTitle>
+                      <AlertDescription>
+                        ¡El precio por persona es de $30! 💸
+                      </AlertDescription>
+                    </Alert>
+                  );
+                case "gye-quito":
+                case "quito-gye":
+                  return (
+                    <Alert variant="default">
+                      <AlertTitle>Costo del viaje</AlertTitle>
+                      <AlertDescription>
+                        ¡El precio por persona es de $47! 💸
+                      </AlertDescription>
+                    </Alert>
+                  );
+                case "manta-quito":
+                case "quito-manta":
+                  return (
+                    <Alert variant="default">
+                      <AlertTitle>Costo del viaje</AlertTitle>
+                      <AlertDescription>
+                        ¡El precio por persona es de $42! 💸
+                      </AlertDescription>
+                    </Alert>
+                  );
+                default:
+                  return <h1>404 - No encontrado</h1>;
+              }
+            })()}
+            <div className="mt-8">
+              <FormRadioGroup
+                name="asientos"
+                label="🪑 Asientos para reservar"
+                options={asientos}
+                required
+              />
+            </div>
           </div>
 
           <Button

@@ -27,7 +27,7 @@ export default function FormRadioGroup({
 }: FormRadioGroupProps) {
   return (
     <div className="space-y-3">
-      <Label className="text-sm font-medium text-zinc-900">
+      <Label className="label-title">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </Label>
@@ -49,7 +49,7 @@ export default function FormRadioGroup({
             />
             <Label
               htmlFor={`${name}-${option.value}`}
-              className="font-normal text-sm text-zinc-700 cursor-pointer"
+              className="text-sm font-medium text-zinc-900"
             >
               {option.label}
             </Label>

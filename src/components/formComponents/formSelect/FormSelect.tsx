@@ -6,6 +6,8 @@ export interface SelectOption {
   value: string;
   label: string;
   disabled?: boolean;
+  // Si está presente, la opción solo aparece cuando el valor dependiente coincide
+  if?: string[];
 }
 
 export interface FormSelectProps {
@@ -26,6 +28,8 @@ export interface FormSelectProps {
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLSelectElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLSelectElement>) => void;
+  // Valor externo que controla la visibilidad de opciones con `if`
+  dependsOnValue?: string;
 }
 
 export const FormSelect: React.FC<FormSelectProps> = ({
@@ -46,13 +50,23 @@ export const FormSelect: React.FC<FormSelectProps> = ({
   onChange,
   onBlur,
   onFocus,
+  dependsOnValue,
 }) => {
   const defaultSelectClasses =
     "w-full rounded-xl border border-zinc-200 bg-white text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 appearance-none cursor-pointer";
-  const defaultLabelClasses = "text-zinc-800";
+  const defaultLabelClasses = "label-title";
 
-  const finalSelectClasses = `${defaultSelectClasses} ${selectClassName}`.trim();
+  const finalSelectClasses =
+    `${defaultSelectClasses} ${selectClassName}`.trim();
   const finalLabelClasses = `${defaultLabelClasses} ${labelClassName}`.trim();
+
+  const visibleOptions = React.useMemo(() => {
+    return options.filter((option) => {
+      if (!option.if || option.if.length === 0) return true;
+      if (dependsOnValue === undefined || dependsOnValue === null) return false;
+      return option.if.includes(dependsOnValue);
+    });
+  }, [options, dependsOnValue]);
 
   const selectWithIcon = Icon && (
     <div className="relative">
@@ -71,7 +85,7 @@ export const FormSelect: React.FC<FormSelectProps> = ({
         onBlur={onBlur}
         onFocus={onFocus}
         className={`${
-          iconPosition === "left" ? "pl-10" : "pr-10"
+          iconPosition === "left" ? "pl-10 pr-10" : "pl-3 pr-10"
         } py-2.5 ${finalSelectClasses}`}
       >
         {placeholder && (
@@ -79,7 +93,7 @@ export const FormSelect: React.FC<FormSelectProps> = ({
             {placeholder}
           </option>
         )}
-        {options.map((option) => (
+        {visibleOptions.map((option) => (
           <option
             key={option.value}
             value={option.value}
@@ -126,7 +140,7 @@ export const FormSelect: React.FC<FormSelectProps> = ({
             {placeholder}
           </option>
         )}
-        {options.map((option) => (
+        {visibleOptions.map((option) => (
           <option
             key={option.value}
             value={option.value}
@@ -164,4 +178,4 @@ export const FormSelect: React.FC<FormSelectProps> = ({
       {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
     </div>
   );
-}; 
+};

@@ -120,3 +120,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.label-title{
+  @apply text-lg text-zinc-800;
+}
