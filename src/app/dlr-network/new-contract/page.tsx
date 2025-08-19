@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/formComponents/formInput";
-import { FormSelect } from "@/components/formComponents/formSelect";
 import { FileUploader } from "@/components/formComponents/fileUploader";
 import { FormPhone } from "@/components/formComponents/formPhone";
 import { FormEmail } from "@/components/formComponents/formEmail";
@@ -10,7 +9,6 @@ import { ThankYouScreen } from "@/components/formComponents/thankYouScreen";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { FormRadioGroup } from "@/components/formComponents/formRadioGroup";
-import { useSearchParams } from "next/navigation";
 import { ulid } from "ulid";
 
 interface FormData {
@@ -32,7 +30,6 @@ export default function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState<FormData | null>(null);
   const [queryParams, setQueryParams] = useState<Record<string, string>>({});
-  const searchParams = useSearchParams();
 
   // Función para generar ULID único
   const generateULID = () => {
@@ -42,16 +39,19 @@ export default function ContactForm() {
   // Capturar todos los query parameters al cargar el componente
   useEffect(() => {
     const params: Record<string, string> = {};
-    searchParams.forEach((value, key) => {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+
+    urlSearchParams.forEach((value: string, key: string) => {
       params[key] = value;
     });
+
     setQueryParams(params);
 
     // Log de los parámetros capturados para debugging
     if (Object.keys(params).length > 0) {
       console.log("Query parameters capturados:", params);
     }
-  }, [searchParams]);
+  }, []);
 
   // Opciones para el select de paquetes
   const paquetes = [
