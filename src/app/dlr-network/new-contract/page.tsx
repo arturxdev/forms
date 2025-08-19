@@ -7,9 +7,11 @@ import { FileUploader } from "@/components/formComponents/fileUploader";
 import { FormPhone } from "@/components/formComponents/formPhone";
 import { FormEmail } from "@/components/formComponents/formEmail";
 import { ThankYouScreen } from "@/components/formComponents/thankYouScreen";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { FormRadioGroup } from "@/components/formComponents/formRadioGroup";
+import { useSearchParams } from "next/navigation";
+import { ulid } from "ulid";
 
 interface FormData {
   nombre: string;
@@ -29,6 +31,27 @@ export default function ContactForm() {
   const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState<FormData | null>(null);
+  const [queryParams, setQueryParams] = useState<Record<string, string>>({});
+  const searchParams = useSearchParams();
+
+  // Función para generar ULID único
+  const generateULID = () => {
+    return ulid();
+  };
+
+  // Capturar todos los query parameters al cargar el componente
+  useEffect(() => {
+    const params: Record<string, string> = {};
+    searchParams.forEach((value, key) => {
+      params[key] = value;
+    });
+    setQueryParams(params);
+
+    // Log de los parámetros capturados para debugging
+    if (Object.keys(params).length > 0) {
+      console.log("Query parameters capturados:", params);
+    }
+  }, [searchParams]);
 
   // Opciones para el select de paquetes
   const paquetes = [
@@ -56,9 +79,13 @@ export default function ContactForm() {
   ];
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    const URL =
-      "https://n8n.srv955856.hstgr.cloud/webhook-test/9384b209-5dff-4fce-8d8b-c60f6e1c4944";
+    let URL =
+      "https://n8n.srv955856.hstgr.cloud/webhook-test/33d1de4b-5499-4fd6-bf9e-aa85f7f866db";
     e.preventDefault();
+
+    // Generar ULID único para esta petición
+    const requestULID = generateULID();
+    console.log("ULID generado para esta petición:", requestULID);
 
     const formData = new FormData(e.currentTarget);
 
@@ -70,7 +97,22 @@ export default function ContactForm() {
       formData.append("comprobante", comprobanteFile);
     }
 
-    // Enviar usando FormData para archivos
+    // Agregar el ULID único a los datos del formulario
+    formData.append("uuid", requestULID);
+
+    // Agregar todos los query parameters a la URL de la petición
+    if (Object.keys(queryParams).length > 0) {
+      const urlParams = new URLSearchParams();
+      Object.entries(queryParams).forEach(([key, value]) => {
+        urlParams.append(key, value);
+      });
+
+      URL += `?${urlParams.toString()}`;
+      console.log("Query parameters agregados a la URL:", queryParams);
+      console.log("URL final con query params:", URL);
+    }
+
+    // Enviar usando FormData para archivos y datos en la misma petición
     fetch(URL, {
       method: "POST",
       body: formData,
@@ -78,7 +120,6 @@ export default function ContactForm() {
 
     // Obtener datos del formulario para el alert (sin el archivo)
     const data = Object.fromEntries(formData) as unknown as FormData;
-    console.log(data);
 
     // Guardar los datos del formulario y mostrar pantalla de agradecimiento
     setFormData(data);
@@ -124,6 +165,24 @@ export default function ContactForm() {
             Información del contratante
           </p>
         </div>
+
+        {/* Información de Query Parameters (solo si existen) */}
+        {queryParams.debug === "true" && (
+          <div className="px-6 pt-2">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-xs font-medium text-blue-800 mb-2">
+                📋 Información adicional detectada:
+              </p>
+              <div className="space-y-1">
+                {Object.entries(queryParams).map(([key, value]) => (
+                  <p key={key} className="text-xs text-blue-700">
+                    <span className="font-medium">{key}:</span> {value}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-6">
