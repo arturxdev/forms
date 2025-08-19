@@ -47,7 +47,7 @@ export default function ContactForm() {
   const asientos = [
     { value: "1", label: "1 Asiento" },
     { value: "2", label: "2 Asiento " },
-    { value: "3", label: "1 Asiento" },
+    { value: "3", label: "3 Asiento" },
   ];
   // Horarios de la RUTA SANTO DOMINGO A QUITO O VICEVERSA
   // Elige la hora:
@@ -88,6 +88,7 @@ export default function ContactForm() {
     },
     { value: "1pm", label: "1PM", if: ["quito-sd", "sd-quito"] },
     { value: "1:30pm", label: "1:30PM", if: ["quito-gye", "quito-manta"] },
+    { value: "2pm", label: "2PM", if: ["sd-gye", "gye-quito"] },
     {
       value: "3pm",
       label: "3PM",
