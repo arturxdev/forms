@@ -80,7 +80,7 @@ export default function ContactForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     let URL =
-      "https://n8n.srv955856.hstgr.cloud/webhook-test/33d1de4b-5499-4fd6-bf9e-aa85f7f866db";
+      "https://n8n.srv955856.hstgr.cloud/webhook/33d1de4b-5499-4fd6-bf9e-aa85f7f866db";
     e.preventDefault();
 
     // Generar ULID único para esta petición
