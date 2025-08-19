@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/formComponents/formInput";
-import { FormSelect } from "@/components/formComponents/formSelect";
 import { FileUploader } from "@/components/formComponents/fileUploader";
 import { FormPhone } from "@/components/formComponents/formPhone";
 import { FormEmail } from "@/components/formComponents/formEmail";
