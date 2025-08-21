@@ -104,7 +104,7 @@ export default function ContactForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const URL =
-      "https://n8n.srv955856.hstgr.cloud/webhook-test/9384b209-5dff-4fce-8d8b-c60f6e1c4944";
+      "https://painfully-feasible-sunfish.ngrok-free.app/webhook-test/b92da1ad-3155-44e0-88d2-2ef5dbcf41db";
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
