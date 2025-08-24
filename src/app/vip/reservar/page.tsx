@@ -1,31 +1,19 @@
 "use client";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { FormInput } from "@/components/formComponents/formInput";
-import { FileUploader } from "@/components/formComponents/fileUploader";
-import { FormPhone } from "@/components/formComponents/formPhone";
-import { FormEmail } from "@/components/formComponents/formEmail";
 import { ThankYouScreen } from "@/components/formComponents/thankYouScreen";
 import { useState } from "react";
 import { toast } from "sonner";
-import { FormRadioGroup, FormSelect } from "@/components/formComponents";
+import {
+  FormRadioGroup,
+  FormSelect,
+  PageHeader,
+  PageImageHeader,
+} from "@/components/formComponents";
 
-interface FormData {
-  nombre: string;
-  apellido: string;
-  email: string;
-  telefono: string;
-  identificacion: string;
-  estrato: string;
-  direccion: string;
-  direccionServicio: string;
-  departamento: string;
-  municipio: string;
-  paquete: string;
-}
+interface FormData {}
 
 export default function ContactForm() {
-  const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState<FormData | null>(null);
   const [viaje, setViaje] = useState<string>("sd-quito");
@@ -109,14 +97,6 @@ export default function ContactForm() {
 
     const formData = new FormData(e.currentTarget);
 
-    // Remover el input file del FormData para evitar duplicados
-    formData.delete("comprobante");
-
-    // Agregar solo el archivo del estado si existe
-    if (comprobanteFile) {
-      formData.append("comprobante", comprobanteFile);
-    }
-
     // Enviar usando FormData para archivos
     fetch(URL, {
       method: "POST",
@@ -130,17 +110,13 @@ export default function ContactForm() {
     // Guardar los datos del formulario y mostrar pantalla de agradecimiento
     setFormData(data);
     setIsSubmitted(true);
-
-    toast.success(
-      `¡Gracias, ${data.nombre} ${data.apellido}!\nNos pondremos en contacto a: ${data.email}`
-    );
   };
 
   // Si el formulario fue enviado exitosamente, mostrar la pantalla de agradecimiento
   if (isSubmitted) {
     return (
       <ThankYouScreen
-        title={`¡Gracias, ${formData?.nombre} ${formData?.apellido}!`}
+        title={`¡Gracias!`}
         description="Te notificaremos por medio de WhatsApp de los siguientes pasos"
       />
     );
@@ -150,24 +126,12 @@ export default function ContactForm() {
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-4xl rounded-2xl shadow-xl border border-zinc-100 overflow-hidden bg-white">
         {/* Header con imagen */}
-        <div className="h-40 w-full overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop"
-            alt="Encabezado minimalista"
-            className="h-full w-full object-cover"
-            width={1600}
-            height={400}
-            loading="eager"
-            style={{ display: "block" }}
-          />
-        </div>
+        <PageImageHeader
+          imageUrl="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop"
+          altText="Encabezado minimalista"
+        />
 
-        {/* Título */}
-        <div className="px-6 pt-6">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-            Reserva un viaje
-          </h1>
-        </div>
+        <PageHeader title="Reserva un viaje" subtitle="" />
 
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-6">
@@ -274,10 +238,7 @@ export default function ContactForm() {
             </div>
           </div>
 
-          <Button
-            type="submit"
-            className="w-full rounded-xl bg-zinc-900 text-white py-3 text-sm font-medium tracking-wide hover:opacity-95 active:opacity-90 transition"
-          >
+          <Button type="submit" className="btn">
             Enviar Solicitud
           </Button>
 

@@ -1,39 +1,32 @@
 "use client";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { FormInput } from "@/components/formComponents/formInput";
-import { FileUploader } from "@/components/formComponents/fileUploader";
-import { FormPhone } from "@/components/formComponents/formPhone";
-import { FormEmail } from "@/components/formComponents/formEmail";
-import { ThankYouScreen } from "@/components/formComponents/thankYouScreen";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { FormRadioGroup, FormSelect } from "@/components/formComponents";
+import {
+  FormInput,
+  FileUploader,
+  ThankYouScreen,
+  FormRadioGroup,
+  FormSelect,
+  PageImageHeader,
+  DebugInfo,
+  PageHeader,
+} from "@/components/formComponents";
 
-interface FormData {
-  nombre: string;
-  apellido: string;
-  email: string;
-  telefono: string;
-  identificacion: string;
-  estrato: string;
-  direccion: string;
-  direccionServicio: string;
-  departamento: string;
-  municipio: string;
-  paquete: string;
-}
+interface FormData {}
 
 export default function ContactForm() {
   const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState<FormData | null>(null);
+  const [queryParams, setQueryParams] = useState<Record<string, string>>({});
   const [viaje, setViaje] = useState<string>("sd-quito");
   const [hora, setHora] = useState<string>("");
 
   // Opciones para el select de paquetes
   const paquetes = [
-    { value: "sd-quito", label: "1️⃣ Santo Domingo → Quito" },
+    { value: "sd-quito", label: "1️⃣ Santo Domingo → Quito (valle/etc/et)" },
     { value: "quito-sd", label: "2️⃣ Quito → Santo Domingo" },
     { value: "sd-manta", label: "3️⃣ Santo Domingo → Manta" },
     { value: "manta-sd", label: "4️⃣ Manta → Santo Domingo" },
@@ -102,6 +95,21 @@ export default function ContactForm() {
     { value: "7pm", label: "7PM", if: ["quito-sd", "sd-quito"] },
   ];
 
+  useEffect(() => {
+    const params: Record<string, string> = {};
+    const urlSearchParams = new URLSearchParams(window.location.search);
+
+    urlSearchParams.forEach((value: string, key: string) => {
+      params[key] = value;
+    });
+
+    setQueryParams(params);
+
+    // Log de los parámetros capturados para debugging
+    if (Object.keys(params).length > 0) {
+      console.log("Query parameters capturados:", params);
+    }
+  }, []);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const URL =
       "https://painfully-feasible-sunfish.ngrok-free.app/webhook-test/b92da1ad-3155-44e0-88d2-2ef5dbcf41db";
@@ -130,17 +138,13 @@ export default function ContactForm() {
     // Guardar los datos del formulario y mostrar pantalla de agradecimiento
     setFormData(data);
     setIsSubmitted(true);
-
-    toast.success(
-      `¡Gracias, ${data.nombre} ${data.apellido}!\nNos pondremos en contacto a: ${data.email}`
-    );
   };
 
   // Si el formulario fue enviado exitosamente, mostrar la pantalla de agradecimiento
   if (isSubmitted) {
     return (
       <ThankYouScreen
-        title={`¡Gracias, ${formData?.nombre} ${formData?.apellido}!`}
+        title={`¡Gracias!`}
         description="Te notificaremos por medio de WhatsApp de los siguientes pasos"
       />
     );
@@ -150,27 +154,19 @@ export default function ContactForm() {
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-4xl rounded-2xl shadow-xl border border-zinc-100 overflow-hidden bg-white">
         {/* Header con imagen */}
-        <div className="h-40 w-full overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop"
-            alt="Encabezado minimalista"
-            className="h-full w-full object-cover"
-            width={1600}
-            height={400}
-            loading="eager"
-            style={{ display: "block" }}
-          />
-        </div>
+        <PageImageHeader
+          imageUrl="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop"
+          altText="Encabezado minimalista"
+        />
 
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-6">
           {/* Título */}
-          {/* Título */}
-          <div className="px-6 pt-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-              Reserva un viaje
-            </h1>
-          </div>
+          <PageHeader title="Reserva un viaje" subtitle="" />
+          <DebugInfo
+            queryParams={queryParams}
+            debug={queryParams.debug === "true"}
+          />
           {/* Nueva sección - Dirección donde se instalará el servicio */}
           <div className="border-t border-zinc-200 pt-6">
             {/* Paquete a contratar (ancho completo) */}
@@ -324,10 +320,7 @@ export default function ContactForm() {
               onChange={(file) => setComprobanteFile(file)}
             />
           </div>
-          <Button
-            type="submit"
-            className="w-full rounded-xl bg-zinc-900 text-white py-3 text-sm font-medium tracking-wide hover:opacity-95 active:opacity-90 transition"
-          >
+          <Button type="submit" className="btn">
             Enviar Solicitud
           </Button>
 

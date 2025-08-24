@@ -10,7 +10,8 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { FormRadioGroup } from "@/components/formComponents/formRadioGroup";
 import { ulid } from "ulid";
-
+import { DebugInfo, PageImageHeader } from "@/components/formComponents";
+import { PageHeader } from "@/components/formComponents";
 interface FormData {
   nombre: string;
   apellido: string;
@@ -144,46 +145,17 @@ export default function ContactForm() {
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-4xl rounded-2xl shadow-xl border border-zinc-100 overflow-hidden bg-white">
         {/* Header con imagen */}
-        <div className="h-40 w-full overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop"
-            alt="Encabezado minimalista"
-            className="h-full w-full object-cover"
-            width={1600}
-            height={400}
-            loading="eager"
-            style={{ display: "block" }}
-          />
-        </div>
-
+        <PageImageHeader imageUrl="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop" />
         {/* Título */}
-        <div className="px-6 pt-6">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-            Contratación
-          </h1>
-          <p className="text-sm text-zinc-500 mt-1">
-            Información del contratante
-          </p>
-        </div>
-
+        <PageHeader
+          title="Contratación"
+          subtitle="Información del contratante"
+        />
         {/* Información de Query Parameters (solo si existen) */}
-        {queryParams.debug === "true" && (
-          <div className="px-6 pt-2">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <p className="text-xs font-medium text-blue-800 mb-2">
-                📋 Información adicional detectada:
-              </p>
-              <div className="space-y-1">
-                {Object.entries(queryParams).map(([key, value]) => (
-                  <p key={key} className="text-xs text-blue-700">
-                    <span className="font-medium">{key}:</span> {value}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
+        <DebugInfo
+          queryParams={queryParams}
+          debug={queryParams.debug === "true"}
+        />
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-6">
           {/* Primera fila - Nombre y Apellido */}
@@ -313,10 +285,7 @@ export default function ContactForm() {
             />
           </div>
 
-          <Button
-            type="submit"
-            className="w-full rounded-xl bg-zinc-900 text-white py-3 text-sm font-medium tracking-wide hover:opacity-95 active:opacity-90 transition"
-          >
+          <Button type="submit" className="btn">
             Enviar Solicitud
           </Button>
 

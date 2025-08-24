@@ -5,16 +5,29 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { ulid } from "ulid";
 import {
-  PageHeader,
-  PageImageHeader,
-  FormRadioGroup,
   ThankYouScreen,
   DebugInfo,
+  FileUploader,
+  PageHeader,
+  PageImageHeader,
 } from "@/components/formComponents";
 
-interface FormData {}
+interface FormData {
+  nombre: string;
+  apellido: string;
+  email: string;
+  telefono: string;
+  identificacion: string;
+  estrato: string;
+  direccion: string;
+  direccionServicio: string;
+  departamento: string;
+  municipio: string;
+  paquete: string;
+}
 
 export default function ContactForm() {
+  const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState<FormData | null>(null);
   const [queryParams, setQueryParams] = useState<Record<string, string>>({});
@@ -40,11 +53,6 @@ export default function ContactForm() {
       console.log("Query parameters capturados:", params);
     }
   }, []);
-
-  const opciones = [
-    { value: "false", label: "Aceptar" },
-    { value: "true", label: "Rechazar" },
-  ];
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     let URL =
@@ -88,7 +96,9 @@ export default function ContactForm() {
     setFormData(data);
     setIsSubmitted(true);
 
-    toast.success(`¡Gracias!\nNos pondremos en contacto`);
+    toast.success(
+      `¡Gracias, ${data.nombre} ${data.apellido}!\nNos pondremos en contacto a: ${data.email}`
+    );
   };
 
   // Si el formulario fue enviado exitosamente, mostrar la pantalla de agradecimiento
@@ -107,34 +117,27 @@ export default function ContactForm() {
 
         {/* Título */}
         <PageHeader
-          title="Aceptas al usuario"
-          subtitle="Información del contratante"
+          title="Envio de contrato"
+          subtitle="Envía tu contrato firmado"
         />
-
-        {/* Información de Query Parameters (solo si existen) */}
         <DebugInfo
           queryParams={queryParams}
           debug={queryParams.debug === "true"}
         />
-        {/* Formulario */}
         <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-6">
-          <div>
-            <p>Nombre: {queryParams.name} </p>
-            <p>Email: {queryParams.email} </p>
-          </div>
-          {/* Segunda fila - Email y Teléfono */}
-          <FormRadioGroup
-            name="accept"
-            label="Decicion"
+          <FileUploader
+            id="contract"
+            name="contract"
+            label="Contrato"
             required
-            options={opciones}
+            accept=".pdf,.jpg,.jpeg,.png"
+            maxSize="10MB"
+            onChange={(file) => setComprobanteFile(file)}
           />
-
           <Button type="submit" className="btn">
             Enviar Solicitud
           </Button>
 
-          {/* Nota de privacidad minimal */}
           <p className="text-[11px] leading-relaxed text-zinc-500 text-center">
             Al enviar, aceptas que nos pongamos en contacto con la información
             proporcionada.
