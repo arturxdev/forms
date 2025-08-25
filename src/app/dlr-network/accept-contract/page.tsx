@@ -48,7 +48,7 @@ export default function ContactForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     let URL =
-      "https://n8n-n8n.lolule.easypanel.host/webhook-test/d07ccb59-056e-482a-a7cd-7cd63462f672";
+      "https://n8n-n8n.lolule.easypanel.host/webhook/d07ccb59-056e-482a-a7cd-7cd63462f672";
     e.preventDefault();
 
     // Generar ULID único para esta petición
