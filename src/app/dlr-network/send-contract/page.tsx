@@ -27,9 +27,8 @@ interface FormData {
 }
 
 export default function ContactForm() {
-  const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [, setFormData] = useState<FormData | null>(null);
   const [queryParams, setQueryParams] = useState<Record<string, string>>({});
 
   // Función para generar ULID único
@@ -132,7 +131,6 @@ export default function ContactForm() {
             required
             accept=".pdf,.jpg,.jpeg,.png"
             maxSize="10MB"
-            onChange={(file) => setComprobanteFile(file)}
           />
           <Button type="submit" className="btn">
             Enviar Solicitud

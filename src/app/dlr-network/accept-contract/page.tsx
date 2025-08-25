@@ -12,11 +12,11 @@ import {
   DebugInfo,
 } from "@/components/formComponents";
 
-interface FormData {}
+type FormData = Record<string, unknown>;
 
 export default function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [, setFormData] = useState<FormData | null>(null);
   const [queryParams, setQueryParams] = useState<Record<string, string>>({});
 
   // Función para generar ULID único

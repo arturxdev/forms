@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface PageImageHeaderProps {
   imageUrl: string;
@@ -15,13 +16,13 @@ export const PageImageHeader: React.FC<PageImageHeaderProps> = ({
 }) => {
   return (
     <div className={`${height} w-full overflow-hidden ${className}`}>
-      <img
+      <Image
         src={imageUrl}
         alt={altText}
         className="h-full w-full object-cover"
         width={1600}
         height={400}
-        loading="eager"
+        priority
         style={{ display: "block" }}
       />
     </div>

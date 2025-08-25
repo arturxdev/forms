@@ -2,7 +2,7 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import {
   FormInput,
   FileUploader,
@@ -14,7 +14,7 @@ import {
   PageHeader,
 } from "@/components/formComponents";
 
-interface FormData {}
+type FormData = Record<string, unknown>;
 
 export default function ContactForm() {
   const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);

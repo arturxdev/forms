@@ -3,7 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { ThankYouScreen } from "@/components/formComponents/thankYouScreen";
 import { useState } from "react";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import {
   FormRadioGroup,
   FormSelect,
@@ -11,7 +11,7 @@ import {
   PageImageHeader,
 } from "@/components/formComponents";
 
-interface FormData {}
+type FormData = Record<string, unknown>;
 
 export default function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
