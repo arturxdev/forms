@@ -42,8 +42,8 @@ export default function ContactForm() {
   }, []);
 
   const opciones = [
-    { value: "false", label: "Aceptar" },
-    { value: "true", label: "Rechazar" },
+    { value: "true", label: "Aceptar" },
+    { value: "false", label: "Rechazar" },
   ];
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
