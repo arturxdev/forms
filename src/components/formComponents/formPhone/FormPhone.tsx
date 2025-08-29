@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FormInput, FormInputProps } from "../formInput/FormInput";
 import { Phone } from "lucide-react";
 
@@ -14,7 +14,6 @@ export interface FormPhoneProps extends Omit<FormInputProps, "type" | "icon"> {
 export const FormPhone: React.FC<FormPhoneProps> = ({
   onValidationChange,
   showValidationMessage = true,
-  countryCode = "+57",
   allowInternational = true,
   minLength = 7,
   maxLength = 15,
@@ -30,65 +29,66 @@ export const FormPhone: React.FC<FormPhoneProps> = ({
   };
 
   // Función para validar número de teléfono
-  const validatePhoneNumber = (
-    phoneNumber: string
-  ): { isValid: boolean; message: string } => {
-    if (!phoneNumber) {
-      return { isValid: true, message: "" }; // Campo vacío no es error hasta que se intente enviar
-    }
+  const validatePhoneNumber = useCallback(
+    (phoneNumber: string): { isValid: boolean; message: string } => {
+      if (!phoneNumber) {
+        return { isValid: true, message: "" }; // Campo vacío no es error hasta que se intente enviar
+      }
 
-    const cleaned = cleanPhoneNumber(phoneNumber);
+      const cleaned = cleanPhoneNumber(phoneNumber);
 
-    // Validar longitud mínima
-    if (cleaned.length < minLength) {
-      return {
-        isValid: false,
-        message: `El teléfono debe tener al menos ${minLength} dígitos`,
-      };
-    }
+      // Validar longitud mínima
+      if (cleaned.length < minLength) {
+        return {
+          isValid: false,
+          message: `El teléfono debe tener al menos ${minLength} dígitos`,
+        };
+      }
 
-    // Validar longitud máxima
-    if (cleaned.length > maxLength) {
-      return {
-        isValid: false,
-        message: `El teléfono no puede exceder ${maxLength} dígitos`,
-      };
-    }
+      // Validar longitud máxima
+      if (cleaned.length > maxLength) {
+        return {
+          isValid: false,
+          message: `El teléfono no puede exceder ${maxLength} dígitos`,
+        };
+      }
 
-    // Validar que solo contenga números y +
-    if (!/^[\d+]+$/.test(cleaned)) {
-      return {
-        isValid: false,
-        message: "El teléfono solo puede contener números y el símbolo +",
-      };
-    }
+      // Validar que solo contenga números y +
+      if (!/^[\d+]+$/.test(cleaned)) {
+        return {
+          isValid: false,
+          message: "El teléfono solo puede contener números y el símbolo +",
+        };
+      }
 
-    // Validar formato básico
-    if (!cleaned.includes("+") && !allowInternational) {
-      return {
-        isValid: false,
-        message: "Debe incluir el código de país (ej: +57)",
-      };
-    }
+      // Validar formato básico
+      if (!cleaned.includes("+") && !allowInternational) {
+        return {
+          isValid: false,
+          message: "Debe incluir el código de país (ej: +57)",
+        };
+      }
 
-    // Validar que tenga al menos un dígito después del +
-    if (cleaned.startsWith("+") && cleaned.length < 3) {
-      return {
-        isValid: false,
-        message: "El código de país debe tener al menos 2 dígitos",
-      };
-    }
+      // Validar que tenga al menos un dígito después del +
+      if (cleaned.startsWith("+") && cleaned.length < 3) {
+        return {
+          isValid: false,
+          message: "El código de país debe tener al menos 2 dígitos",
+        };
+      }
 
-    // Validar que no tenga solo el +
-    if (cleaned === "+") {
-      return {
-        isValid: false,
-        message: "Ingrese un número de teléfono válido",
-      };
-    }
+      // Validar que no tenga solo el +
+      if (cleaned === "+") {
+        return {
+          isValid: false,
+          message: "Ingrese un número de teléfono válido",
+        };
+      }
 
-    return { isValid: true, message: "" };
-  };
+      return { isValid: true, message: "" };
+    },
+    [minLength, maxLength, allowInternational]
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPhone = e.target.value;
@@ -144,7 +144,7 @@ export const FormPhone: React.FC<FormPhoneProps> = ({
         setErrorMessage("");
       }
     }
-  }, [props.value]);
+  }, [props.value, validatePhoneNumber]);
 
   return (
     <FormInput

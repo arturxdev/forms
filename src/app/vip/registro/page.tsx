@@ -19,7 +19,7 @@ type FormData = Record<string, unknown>;
 export default function ContactForm() {
   const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [, setFormData] = useState<FormData | null>(null);
   const [queryParams, setQueryParams] = useState<Record<string, string>>({});
   const [viaje, setViaje] = useState<string>("sd-quito");
   const [hora, setHora] = useState<string>("");

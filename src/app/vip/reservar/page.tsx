@@ -1,11 +1,9 @@
 "use client";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { ThankYouScreen } from "@/components/formComponents/thankYouScreen";
 import { useState } from "react";
 // import { toast } from "sonner";
 import {
-  FormRadioGroup,
   FormSelect,
   PageHeader,
   PageImageHeader,
@@ -15,7 +13,7 @@ type FormData = Record<string, unknown>;
 
 export default function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [, setFormData] = useState<FormData | null>(null);
   const [viaje, setViaje] = useState<string>("sd-quito");
   const [hora, setHora] = useState<string>("");
   const [asiento, setAsiento] = useState<number>(1);

@@ -12,7 +12,7 @@ import {
   PageImageHeader,
 } from "@/components/formComponents";
 
-interface FormData {}
+type FormData = Record<string, unknown>;
 
 export default function ContactForm() {
   const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
