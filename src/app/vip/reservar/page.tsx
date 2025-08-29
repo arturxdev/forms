@@ -74,7 +74,7 @@ export default function ContactForm() {
         "quito-sd-valles",
         "quito-sd-aero",
         "sd-quito-valles",
-        "quito-sd-aero",
+        "sd-quto-aero",
       ],
     },
     {
@@ -93,7 +93,7 @@ export default function ContactForm() {
         "quito-sd-valles",
         "quito-sd-aero",
         "sd-quito-valles",
-        "quito-sd-aero",
+        "sd-quito-aero",
       ],
     },
     {
@@ -105,7 +105,7 @@ export default function ContactForm() {
         "quito-sd-valles",
         "quito-sd-aero",
         "sd-quito-valles",
-        "quito-sd-aero",
+        "sd-quito-aero",
       ],
     },
     { value: "7am", label: "7AM", if: ["quito-gye"] },
@@ -121,7 +121,7 @@ export default function ContactForm() {
         "quito-sd-valles",
         "quito-sd-aero",
         "sd-quito-valles",
-        "quito-sd-aero",
+        "sd-quito-aero",
       ],
     },
     {
@@ -136,7 +136,7 @@ export default function ContactForm() {
         "quito-sd-valles",
         "quito-sd-aero",
         "sd-quito-valles",
-        "quito-sd-aero",
+        "sd-quito-aero",
       ],
     },
     { value: "11pm", label: "11PM", if: ["quito-gye"] },
@@ -150,7 +150,7 @@ export default function ContactForm() {
         "quito-sd-valles",
         "quito-sd-aero",
         "sd-quito-valles",
-        "quito-sd-aero",
+        "sd-quito-aero",
       ],
     },
     {
@@ -162,7 +162,7 @@ export default function ContactForm() {
         "quito-sd-valles",
         "quito-sd-aero",
         "sd-quito-valles",
-        "quito-sd-aero",
+        "sd-quito-aero",
       ],
     },
     { value: "1:30pm", label: "1:30PM", if: ["quito-gye", "quito-manta"] },
@@ -175,7 +175,7 @@ export default function ContactForm() {
         "quito-sd-valles",
         "quito-sd-aero",
         "sd-quito-valles",
-        "quito-sd-aero",
+        "sd-quito-aero",
       ],
     },
     {
@@ -190,7 +190,7 @@ export default function ContactForm() {
         "quito-sd-valles",
         "quito-sd-aero",
         "sd-quito-valles",
-        "quito-sd-aero",
+        "sd-quito-aero",
       ],
     },
     {
@@ -206,7 +206,7 @@ export default function ContactForm() {
         "quito-sd-valles",
         "quito-sd-aero",
         "sd-quito-valles",
-        "quito-sd-aero",
+        "sd-quito-aero",
       ],
     },
     {
@@ -218,7 +218,7 @@ export default function ContactForm() {
         "quito-sd-valles",
         "quito-sd-aero",
         "sd-quito-valles",
-        "quito-sd-aero",
+        "sd-quito-aero",
       ],
     },
   ];
