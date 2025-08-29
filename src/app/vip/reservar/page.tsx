@@ -18,19 +18,46 @@ export default function ContactForm() {
   const [formData, setFormData] = useState<FormData | null>(null);
   const [viaje, setViaje] = useState<string>("sd-quito");
   const [hora, setHora] = useState<string>("");
+  const [asiento, setAsiento] = useState<number>(1);
 
+  const calculateTotal = () => {
+    const price = paquetes.find((elm) => elm.value == viaje)!.price;
+    return price * asiento;
+  };
   // Opciones para el select de paquetes
   const paquetes = [
-    { value: "sd-quito", label: "1️⃣ Santo Domingo → Quito" },
-    { value: "quito-sd", label: "2️⃣ Quito → Santo Domingo" },
-    { value: "sd-manta", label: "3️⃣ Santo Domingo → Manta" },
-    { value: "manta-sd", label: "4️⃣ Manta → Santo Domingo" },
-    { value: "sd-gye", label: "5️⃣ Santo Domingo → Guayaquil" },
-    { value: "gye-sd", label: "6️⃣ Guayaquil → Santo Domingo" },
-    { value: "quito-gye", label: "7️⃣ Quito → Guayaquil" },
-    { value: "gye-quito", label: "8️⃣ Guayaquil → Quito" },
-    { value: "quito-manta", label: "9️⃣ Quito → Manta" },
-    { value: "manta-quito", label: "🔟 Manta → Quito" },
+    { value: "sd-quito", label: " Santo Domingo → Quito", price: 17 },
+    {
+      value: "sd-quito-valles",
+      label:
+        "Santo Domingo → Quito(Valles / Carapungo / Calderón / Mitad del Mundo )",
+      price: 20,
+    },
+    {
+      value: "sd-quito-aero",
+      label: "Santo Domingo → Quito(Aeropuerto Tababela)",
+      price: 35,
+    },
+    { value: "quito-sd", label: "Quito → Santo Domingo", price: 17 },
+    {
+      value: "quito-sd-valles",
+      label:
+        "Quito(Valles/Carapungo/Calderón/Mitad del Mundo ) → Santo Domingo ",
+      price: 20,
+    },
+    {
+      value: "quito-sd-aero",
+      label: "Quito(Aeropuerto Tababela) → Santo Domingo",
+      price: 35,
+    },
+    { value: "sd-manta", label: "Santo Domingo → Manta", price: 25 },
+    { value: "manta-sd", label: " Manta → Santo Domingo", price: 25 },
+    { value: "sd-gye", label: "Santo Domingo → Guayaquil", price: 30 },
+    { value: "gye-sd", label: "Guayaquil → Santo Domingo", price: 30 },
+    { value: "quito-gye", label: " Quito → Guayaquil", price: 30 },
+    { value: "gye-quito", label: " Guayaquil → Quito", price: 30 },
+    { value: "quito-manta", label: " Quito → Manta", price: 42 },
+    { value: "manta-quito", label: " Manta → Quito", price: 42 },
   ];
   const asientos = [
     { value: "1", label: "1 Asiento" },
@@ -40,7 +67,18 @@ export default function ContactForm() {
   // Horarios de la RUTA SANTO DOMINGO A QUITO O VICEVERSA
   // Elige la hora:
   const horas = [
-    { value: "4am", label: "4AM", if: ["quito-sd", "sd-quito"] },
+    {
+      value: "4am",
+      label: "4AM",
+      if: [
+        "quito-sd",
+        "sd-quito",
+        "quito-sd-valles",
+        "quito-sd-aero",
+        "sd-quito-valles",
+        "quito-sd-aero",
+      ],
+    },
     {
       value: "5am",
       label: "5AM",
@@ -54,40 +92,137 @@ export default function ContactForm() {
         "sd-gye",
         "sd-manta",
         "sd-quito",
+        "quito-sd-valles",
+        "quito-sd-aero",
+        "sd-quito-valles",
+        "quito-sd-aero",
       ],
     },
-    { value: "6am", label: "6AM", if: ["quito-sd", "sd-quito"] },
+    {
+      value: "6am",
+      label: "6AM",
+      if: [
+        "quito-sd",
+        "sd-quito",
+        "quito-sd-valles",
+        "quito-sd-aero",
+        "sd-quito-valles",
+        "quito-sd-aero",
+      ],
+    },
     { value: "7am", label: "7AM", if: ["quito-gye"] },
     {
       value: "8am",
       label: "8AM",
-      if: ["manta-quito", "manta-sd", "quito-sd", "sd-manta", "sd-quito"],
+      if: [
+        "manta-quito",
+        "manta-sd",
+        "quito-sd",
+        "sd-manta",
+        "sd-quito",
+        "quito-sd-valles",
+        "quito-sd-aero",
+        "sd-quito-valles",
+        "quito-sd-aero",
+      ],
     },
     {
       value: "10am",
       label: "10AM",
-      if: ["gye-quito", "gye-sd", "quito-sd", "sd-gye", "sd-quito"],
+      if: [
+        "gye-quito",
+        "gye-sd",
+        "quito-sd",
+        "sd-gye",
+        "sd-quito",
+        "quito-sd-valles",
+        "quito-sd-aero",
+        "sd-quito-valles",
+        "quito-sd-aero",
+      ],
     },
     { value: "11pm", label: "11PM", if: ["quito-gye"] },
     {
       value: "12pm",
       label: "12PM",
-      if: ["quito-manta", "quito-sd", "sd-quito"],
+      if: [
+        "quito-manta",
+        "quito-sd",
+        "sd-quito",
+        "quito-sd-valles",
+        "quito-sd-aero",
+        "sd-quito-valles",
+        "quito-sd-aero",
+      ],
     },
-    { value: "1pm", label: "1PM", if: ["quito-sd", "sd-quito"] },
+    {
+      value: "1pm",
+      label: "1PM",
+      if: [
+        "quito-sd",
+        "sd-quito",
+        "quito-sd-valles",
+        "quito-sd-aero",
+        "sd-quito-valles",
+        "quito-sd-aero",
+      ],
+    },
     { value: "1:30pm", label: "1:30PM", if: ["quito-gye", "quito-manta"] },
-    { value: "2pm", label: "2PM", if: ["sd-gye", "gye-quito"] },
+    {
+      value: "2pm",
+      label: "2PM",
+      if: [
+        "sd-gye",
+        "gye-quito",
+        "quito-sd-valles",
+        "quito-sd-aero",
+        "sd-quito-valles",
+        "quito-sd-aero",
+      ],
+    },
     {
       value: "3pm",
       label: "3PM",
-      if: ["manta-quito", "manta-sd", "quito-sd", "sd-manta", "sd-quito"],
+      if: [
+        "manta-quito",
+        "manta-sd",
+        "quito-sd",
+        "sd-manta",
+        "sd-quito",
+        "quito-sd-valles",
+        "quito-sd-aero",
+        "sd-quito-valles",
+        "quito-sd-aero",
+      ],
     },
     {
       value: "5pm",
       label: "5PM",
-      if: ["gye-sd", "manta-sd", "quito-sd", "sd-gye", "sd-manta", "sd-quito"],
+      if: [
+        "gye-sd",
+        "manta-sd",
+        "quito-sd",
+        "sd-gye",
+        "sd-manta",
+        "sd-quito",
+        "quito-sd-valles",
+        "quito-sd-aero",
+        "sd-quito-valles",
+        "quito-sd-aero",
+      ],
     },
-    { value: "7pm", label: "7PM", if: ["quito-sd", "sd-quito"] },
+    {
+      value: "7pm",
+      label: "7PM",
+      if: [
+        "quito-sd",
+        "sd-quito",
+        "quito-sd-valles",
+        "quito-sd-aero",
+        "sd-quito-valles",
+        "quito-sd-aero",
+      ],
+    },
   ];
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -153,7 +288,7 @@ export default function ContactForm() {
               }}
             />
           </div>
-          <div className="border-zinc-200 pt-6">
+          <div className="border-zinc-200">
             {/* Paquete a contratar (ancho completo) */}
             <FormSelect
               id="hora"
@@ -167,75 +302,21 @@ export default function ContactForm() {
             />
           </div>
           <div>
-            {(() => {
-              switch (viaje) {
-                case "sd-quito":
-                case "quito-sd":
-                  return (
-                    <Alert variant="default">
-                      <AlertTitle>Costo del viaje</AlertTitle>
-                      <AlertDescription>
-                        <br />
-                        📍 Quito → $17
-                        <br />
-                        📍 Valles / Carapungo / Calderón / Mitad del Mundo → $20
-                        <br />
-                        ✈️ Aeropuerto Tababela → $35
-                      </AlertDescription>
-                    </Alert>
-                  );
-                case "sd-manta":
-                case "manta-sd":
-                  return (
-                    <Alert variant="default">
-                      <AlertTitle>Costo del viaje</AlertTitle>
-                      <AlertDescription>
-                        ¡El precio por persona es de $25! 💸
-                      </AlertDescription>
-                    </Alert>
-                  );
-                case "gye-sd":
-                case "sd-gye":
-                  return (
-                    <Alert variant="default">
-                      <AlertTitle>Costo del viaje</AlertTitle>
-                      <AlertDescription>
-                        ¡El precio por persona es de $30! 💸
-                      </AlertDescription>
-                    </Alert>
-                  );
-                case "gye-quito":
-                case "quito-gye":
-                  return (
-                    <Alert variant="default">
-                      <AlertTitle>Costo del viaje</AlertTitle>
-                      <AlertDescription>
-                        ¡El precio por persona es de $47! 💸
-                      </AlertDescription>
-                    </Alert>
-                  );
-                case "manta-quito":
-                case "quito-manta":
-                  return (
-                    <Alert variant="default">
-                      <AlertTitle>Costo del viaje</AlertTitle>
-                      <AlertDescription>
-                        ¡El precio por persona es de $42! 💸
-                      </AlertDescription>
-                    </Alert>
-                  );
-                default:
-                  return <h1>404 - No encontrado</h1>;
-              }
-            })()}
             <div className="mt-8">
-              <FormRadioGroup
+              <FormSelect
+                id="asientos"
                 name="asientos"
                 label="🪑 Asientos para reservar"
                 options={asientos}
+                onChange={(e) => setAsiento(Number(e.target.value))}
                 required
               />
             </div>
+            <p className="mt-4">
+              Costo por asiento:{" "}
+              {paquetes.find((elm) => elm.value == viaje)!.price}
+            </p>
+            <p className="mt-4">Total: {calculateTotal()}</p>
           </div>
 
           <Button type="submit" className="btn">

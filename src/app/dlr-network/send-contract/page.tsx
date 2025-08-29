@@ -12,21 +12,10 @@ import {
   PageImageHeader,
 } from "@/components/formComponents";
 
-interface FormData {
-  nombre: string;
-  apellido: string;
-  email: string;
-  telefono: string;
-  identificacion: string;
-  estrato: string;
-  direccion: string;
-  direccionServicio: string;
-  departamento: string;
-  municipio: string;
-  paquete: string;
-}
+interface FormData {}
 
 export default function ContactForm() {
+  const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [, setFormData] = useState<FormData | null>(null);
   const [queryParams, setQueryParams] = useState<Record<string, string>>({});
@@ -55,7 +44,7 @@ export default function ContactForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     let URL =
-      "https://n8n-n8n.lolule.easypanel.host/webhook-test/d07ccb59-056e-482a-a7cd-7cd63462f672";
+      "https://n8n-n8n.lolule.easypanel.host/webhook-test/15d5c7e7-9c31-4761-acc6-e56a405a277b";
     e.preventDefault();
 
     // Generar ULID único para esta petición
@@ -66,6 +55,11 @@ export default function ContactForm() {
 
     // Remover el input file del FormData para evitar duplicados
     formData.delete("comprobante");
+
+    // Agregar solo el archivo del estado si existe
+    if (comprobanteFile) {
+      formData.append("comprobante", comprobanteFile);
+    }
 
     // Agregar el ULID único a los datos del formulario
     formData.append("uuid", requestULID);
@@ -95,14 +89,12 @@ export default function ContactForm() {
     setFormData(data);
     setIsSubmitted(true);
 
-    toast.success(
-      `¡Gracias, ${data.nombre} ${data.apellido}!\nNos pondremos en contacto a: ${data.email}`
-    );
+    toast.success(`¡Gracias!\nNos pondremos en contacto `);
   };
 
   // Si el formulario fue enviado exitosamente, mostrar la pantalla de agradecimiento
   if (isSubmitted) {
-    return <ThankYouScreen title={`Usuario procesado`} description="" />;
+    return <ThankYouScreen title={`Contrato enviado`} description="" />;
   }
 
   return (
@@ -131,6 +123,7 @@ export default function ContactForm() {
             required
             accept=".pdf,.jpg,.jpeg,.png"
             maxSize="10MB"
+            onChange={(file) => setComprobanteFile(file)}
           />
           <Button type="submit" className="btn">
             Enviar Solicitud

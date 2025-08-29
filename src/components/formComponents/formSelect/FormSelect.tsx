@@ -85,8 +85,9 @@ export const FormSelect: React.FC<FormSelectProps> = ({
         onBlur={onBlur}
         onFocus={onFocus}
         className={`${
-          iconPosition === "left" ? "pl-10 pr-10" : "pl-3 pr-10"
+          iconPosition === "left" ? "pl-10 pr-10" : "pl-10 pr-10"
         } py-2.5 ${finalSelectClasses}`}
+        style={{ paddingLeft: iconPosition === "left" ? "2.5rem" : "0.625rem" }}
       >
         {placeholder && (
           <option value="" disabled>
@@ -133,7 +134,7 @@ export const FormSelect: React.FC<FormSelectProps> = ({
         onChange={onChange}
         onBlur={onBlur}
         onFocus={onFocus}
-        className={`py-2.5 pr-10 ${finalSelectClasses}`}
+        className={`py-2.5 pr-10 pl-3 ${finalSelectClasses}`}
       >
         {placeholder && (
           <option value="" disabled>
