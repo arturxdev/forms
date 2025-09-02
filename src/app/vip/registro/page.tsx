@@ -12,6 +12,7 @@ import {
   PageImageHeader,
   DebugInfo,
   PageHeader,
+  FormDatePicker,
 } from "@/components/formComponents";
 import data from "../utils/data.json";
 
@@ -25,6 +26,7 @@ export default function Registro() {
   const [viaje, setViaje] = useState<string>("sd-quito");
   const [hora, setHora] = useState<string>("");
   const [asiento, setAsiento] = useState<number>(1);
+  const [fechaViaje, setFechaViaje] = useState<Date>();
 
   const paquetes = data.paquetes;
   const asientos = data.asientos;
@@ -102,135 +104,130 @@ export default function Registro() {
           {/* Título */}
           <PageHeader
             title="Registro"
-            subtitle="Este formulario solo se llenara la primera vez"
+            subtitle="Este formulario solo se llenará la primera vez"
           />
           <DebugInfo
             queryParams={queryParams}
             debug={queryParams.debug === "true"}
           />
-          <div className="pt-4">
-            {/* Paquete a contratar (ancho completo) */}
-            <FormInput
-              id="nombre"
-              name="nombre"
-              label="Nombre"
-              type="text"
-              required
-              placeholder="Tu nombre"
-            />
+          <p className="text-lg font-bold">1 Registra tus datos</p>
+          <FormInput
+            id="nombre"
+            name="nombre"
+            label="Nombre"
+            type="text"
+            required
+            placeholder="Tu nombre"
+          />
+          <FormInput
+            id="cedula"
+            name="cedula"
+            label="Número de cédula"
+            type="text"
+            required
+            placeholder="Número"
+          />
+          <FormInput
+            id="recomend"
+            name="recomend"
+            label="¿Quién nos recomendó?"
+            type="text"
+            required
+            placeholder="Nombre,instagram,redes sociales"
+          />
+          <FileUploader
+            id="comprobante"
+            name="comprobante"
+            label="Foto con tu cédula"
+            required
+            accept=".pdf,.jpg,.jpeg,.png"
+            maxSize="10MB"
+            onChange={(file) => setComprobanteFile(file)}
+          />
+          <p className="text-lg font-bold border-t border-accent pt-4">
+            2 Selecciona tu viaje
+          </p>
+          <FormSelect
+            id="viaje"
+            name="Viaje"
+            label="🚗 Viaje"
+            options={paquetes}
+            required
+            value={viaje}
+            onValueChange={(newViaje) => {
+              setViaje(newViaje);
+              // Reiniciar hora si ya no aplica para el nuevo viaje
+              setHora("");
+            }}
+          />
+          <FormDatePicker
+            id="fechaViaje"
+            name="fechaViaje"
+            label="📅 Fecha del viaje"
+            placeholder="Selecciona la fecha"
+            required
+            value={fechaViaje}
+            onChange={setFechaViaje}
+          />
+          <FormSelect
+            id="hora"
+            name="hora"
+            label="⏰️ Hora del viaje"
+            options={horas}
+            required
+            value={hora}
+            onValueChange={setHora}
+            dependsOnValue={viaje}
+          />
+          <FormSelect
+            id="asientos"
+            name="asientos"
+            label="🪑 Asientos para reservar"
+            options={asientos}
+            onValueChange={(value) => setAsiento(Number(value))}
+            required
+          />
+          <div className="border p-4 mt-4">
+            <p className="mt-4">
+              Costo del viaje:{" "}
+              {paquetes.find((elm) => elm.value == viaje)!.price}
+            </p>
+            <p className="">Total de asientos: {asiento}</p>
+            <p className="mt-2">Total a pagar: {calculateTotal()}</p>
           </div>
-          <div className="pt-4">
-            <FormInput
-              id="cedula"
-              name="cedula"
-              label="Numero de cedula"
-              type="text"
-              required
-              placeholder="Tu nombre"
-            />
+          <p className="text-lg font-bold border-t border-accent pt-4">
+            3 Envía tu comprobante de pago
+          </p>
+          <div className="border p-4 mt-8">
+            <p className="text-xl mb-2">Datos para transferencia bancaria</p>
+            <p>
+              <strong>Titular:</strong> David Chaves
+            </p>
+            <p>
+              <strong>Cuenta de Ahorros:</strong> 2208489255
+            </p>
+            <p>
+              <strong>Banco:</strong> Pichincha
+            </p>
+            <p>
+              <strong>Cédula:</strong> 1724650310
+            </p>
+            <p>
+              <strong>Teléfono:</strong> 096 137 2106
+            </p>
           </div>
-          <div className="pt-4">
-            <FormInput
-              id="recomend"
-              name="recomend"
-              label="Quien nos recomendo ?"
-              type="text"
-              required
-              placeholder="Tu nombre"
-            />
-          </div>
-          <div className="pt-4">
-            <FileUploader
-              id="comprobante"
-              name="comprobante"
-              label="Foto con tu cedula"
-              required
-              accept=".pdf,.jpg,.jpeg,.png"
-              maxSize="10MB"
-              onChange={(file) => setComprobanteFile(file)}
-            />
-          </div>
-          <div className="border-t border-zinc-200 pt-4">
-            {/* Paquete a contratar (ancho completo) */}
-            <FormSelect
-              id="viaje"
-              name="Viaje"
-              label="🚗 Viaje"
-              options={paquetes}
-              required
-              value={viaje}
-              onValueChange={(newViaje) => {
-                setViaje(newViaje);
-                // Reiniciar hora si ya no aplica para el nuevo viaje
-                setHora("");
-              }}
-            />
-          </div>
-          <div className="mt-4">
-            {/* Paquete a contratar (ancho completo) */}
-            <FormSelect
-              id="hora"
-              name="hora"
-              label="⏰️ Hora del viaje"
-              options={horas}
-              required
-              value={hora}
-              onValueChange={setHora}
-              dependsOnValue={viaje}
-            />
-          </div>
-          <div>
-            <div className="mt-4">
-              <FormSelect
-                id="asientos"
-                name="asientos"
-                label="🪑 Asientos para reservar"
-                options={asientos}
-                onValueChange={(value) => setAsiento(Number(value))}
-                required
-              />
-            </div>
-            <div className="border p-4 mt-4">
-              <p className="mt-4">
-                Costo del viaje:{" "}
-                {paquetes.find((elm) => elm.value == viaje)!.price}
-              </p>
-              <p className="">Total de asientos: {asiento}</p>
-              <p className="mt-2">Total a pagar: {calculateTotal()}</p>
-            </div>
-            <div className="border p-4 mt-8">
-              <p className="text-xl mb-2">Datos para transferencia bancaria</p>
-              <p>
-                <strong>Titular:</strong> David Chaves
-              </p>
-              <p>
-                <strong>Cuenta de Ahorros:</strong> 2208489255
-              </p>
-              <p>
-                <strong>Banco:</strong> Pichincha
-              </p>
-              <p>
-                <strong>Cédula:</strong> 1724650310
-              </p>
-              <p>
-                <strong>Teléfono:</strong> 096 137 2106
-              </p>
-            </div>
-            <div className="pt-4">
-              <FileUploader
-                id="comprobantepago"
-                name="comprobantepago"
-                label="Comprobante de pago"
-                required
-                accept=".pdf,.jpg,.jpeg,.png"
-                maxSize="10MB"
-                onChange={(file) => setComprobanteFile(file)}
-              />
-            </div>
-          </div>
+          <FileUploader
+            id="comprobantepago"
+            name="comprobantepago"
+            label="Comprobante de pago"
+            required
+            accept=".pdf,.jpg,.jpeg,.png"
+            maxSize="10MB"
+            onChange={(file) => setComprobanteFile(file)}
+          />
 
           <Button type="submit" className="btn">
-            Enviar Solicitud
+            Enviar solicitud
           </Button>
 
           {/* Nota de privacidad minimal */}

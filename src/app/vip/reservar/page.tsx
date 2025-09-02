@@ -74,62 +74,49 @@ export default function Reservar() {
         <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-6">
           {/* Nueva sección - Dirección donde se instalará el servicio */}
           <PageHeader title="Reserva un viaje" subtitle="" />
-          <div className="border-t border-zinc-200 ">
-            {/* Paquete a contratar (ancho completo) */}
-            <FormSelect
-              id="viaje"
-              name="Viaje"
-              label="🚗 Viaje"
-              options={paquetes}
-              required
-              value={viaje}
-              onValueChange={(newViaje) => {
-                setViaje(newViaje);
-                // Reiniciar hora si ya no aplica para el nuevo viaje
-                setHora("");
-              }}
-            />
-          </div>
-          <div className="border-zinc-200">
-            {/* Fecha del viaje */}
-            <FormDatePicker
-              id="fechaViaje"
-              name="fechaViaje"
-              label="📅 Fecha del viaje"
-              placeholder="Selecciona la fecha"
-              required
-              value={fechaViaje}
-              onChange={setFechaViaje}
-            />
-          </div>
-          <div className="border-zinc-200">
-            {/* Hora del viaje */}
-            <FormSelect
-              id="hora"
-              name="hora"
-              label="⏰️ Hora del viaje"
-              options={horas}
-              required
-              value={hora}
-              onValueChange={setHora}
-              dependsOnValue={viaje}
-            />
-          </div>
+          <FormSelect
+            id="viaje"
+            name="Viaje"
+            label="🚗 Viaje"
+            options={paquetes}
+            required
+            value={viaje}
+            onValueChange={(newViaje) => {
+              setViaje(newViaje);
+              // Reiniciar hora si ya no aplica para el nuevo viaje
+              setHora("");
+            }}
+          />
+          <FormDatePicker
+            id="fechaViaje"
+            name="fechaViaje"
+            label="📅 Fecha del viaje"
+            placeholder="Selecciona la fecha"
+            required
+            value={fechaViaje}
+            onChange={setFechaViaje}
+          />
+          <FormSelect
+            id="hora"
+            name="hora"
+            label="⏰️ Hora del viaje"
+            options={horas}
+            required
+            value={hora}
+            onValueChange={setHora}
+            dependsOnValue={viaje}
+          />
 
-          <div>
-            <div className="">
-              <FormSelect
-                id="asientos"
-                name="asientos"
-                label="🪑 Asientos para reservar"
-                options={asientos}
-                onValueChange={(value) => setAsiento(Number(value))}
-                required
-              />
-            </div>
-          </div>
+          <FormSelect
+            id="asientos"
+            name="asientos"
+            label="🪑 Asientos para reservar"
+            options={asientos}
+            onValueChange={(value) => setAsiento(Number(value))}
+            required
+          />
           <div className="border p-4 mt-4">
-            <p className="">
+            <p>
               Costo del viaje:{" "}
               {paquetes.find((elm) => elm.value == viaje)!.price}
             </p>
@@ -138,7 +125,7 @@ export default function Reservar() {
           </div>
 
           <Button type="submit" className="btn">
-            Enviar Solicitud
+            Enviar solicitud
           </Button>
 
           {/* Nota de privacidad minimal */}
