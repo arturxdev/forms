@@ -128,7 +128,7 @@ export const FormSelect: React.FC<FormSelectProps> = ({
 
   return (
     <div className={`space-y-2 ${className}`}>
-      <Label htmlFor={id} className={labelClassName}>
+      <Label htmlFor={id} className="label-title">
         {label} {required && <span className="text-destructive">*</span>}
       </Label>
       {Icon ? selectWithIcon : selectWithoutIcon}

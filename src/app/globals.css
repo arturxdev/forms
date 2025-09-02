@@ -162,7 +162,7 @@
 
 @layer components {
   .label-title {
-    @apply text-lg text-zinc-800;
+    @apply !text-lg !text-zinc-800 sm:!text-lg !text-red-500 !font-medium;
   }
 
   .btn {
