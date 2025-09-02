@@ -1,6 +1,7 @@
 export { FileUploader } from "./fileUploader";
 export { FormInput } from "./formInput";
 export { FormSelect } from "./formSelect";
+export { FormDatePicker } from "./formDatePicker";
 export { FormEmail, FormEmailExamples } from "./formEmail";
 export { FormPhone, FormPhoneExamples } from "./formPhone";
 export { ThankYouScreen } from "./thankYouScreen";

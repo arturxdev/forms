@@ -90,8 +90,8 @@ export default function Registro() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl rounded-2xl shadow-xl border border-zinc-100 overflow-hidden bg-white">
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl rounded-2xl shadow-xl border border-zinc-100 overflow-hidden bg-card">
         {/* Header con imagen */}
         <PageImageHeader
           imageUrl="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop"
@@ -160,8 +160,7 @@ export default function Registro() {
               options={paquetes}
               required
               value={viaje}
-              onChange={(e) => {
-                const newViaje = e.target.value;
+              onValueChange={(newViaje) => {
                 setViaje(newViaje);
                 // Reiniciar hora si ya no aplica para el nuevo viaje
                 setHora("");
@@ -177,7 +176,7 @@ export default function Registro() {
               options={horas}
               required
               value={hora}
-              onChange={(e) => setHora(e.target.value)}
+              onValueChange={setHora}
               dependsOnValue={viaje}
             />
           </div>
@@ -188,7 +187,7 @@ export default function Registro() {
                 name="asientos"
                 label="🪑 Asientos para reservar"
                 options={asientos}
-                onChange={(e) => setAsiento(Number(e.target.value))}
+                onValueChange={(value) => setAsiento(Number(value))}
                 required
               />
             </div>

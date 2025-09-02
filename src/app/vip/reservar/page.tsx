@@ -5,6 +5,7 @@ import { useState } from "react";
 // import { toast } from "sonner";
 import {
   FormSelect,
+  FormDatePicker,
   PageHeader,
   PageImageHeader,
 } from "@/components/formComponents";
@@ -18,6 +19,7 @@ export default function Reservar() {
   const [viaje, setViaje] = useState<string>("sd-quito");
   const [hora, setHora] = useState<string>("");
   const [asiento, setAsiento] = useState<number>(1);
+  const [fechaViaje, setFechaViaje] = useState<Date>();
 
   const calculateTotal = () => {
     const price = paquetes.find((elm) => elm.value == viaje)!.price;
@@ -61,19 +63,18 @@ export default function Reservar() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl rounded-2xl shadow-xl border border-zinc-100 overflow-hidden bg-white">
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl rounded-2xl shadow-xl border border-zinc-100 overflow-hidden bg-card">
         {/* Header con imagen */}
         <PageImageHeader
           imageUrl="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop"
           altText="Encabezado minimalista"
         />
 
-        <PageHeader title="Reserva un viaje" subtitle="" />
-
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-6">
           {/* Nueva sección - Dirección donde se instalará el servicio */}
+          <PageHeader title="Reserva un viaje" subtitle="" />
           <div className="border-t border-zinc-200 pt-6">
             {/* Paquete a contratar (ancho completo) */}
             <FormSelect
@@ -83,8 +84,7 @@ export default function Reservar() {
               options={paquetes}
               required
               value={viaje}
-              onChange={(e) => {
-                const newViaje = e.target.value;
+              onValueChange={(newViaje) => {
                 setViaje(newViaje);
                 // Reiniciar hora si ya no aplica para el nuevo viaje
                 setHora("");
@@ -92,7 +92,19 @@ export default function Reservar() {
             />
           </div>
           <div className="border-zinc-200">
-            {/* Paquete a contratar (ancho completo) */}
+            {/* Fecha del viaje */}
+            <FormDatePicker
+              id="fechaViaje"
+              name="fechaViaje"
+              label="📅 Fecha del viaje"
+              placeholder="Selecciona la fecha"
+              required
+              value={fechaViaje}
+              onChange={setFechaViaje}
+            />
+          </div>
+          <div className="border-zinc-200">
+            {/* Hora del viaje */}
             <FormSelect
               id="hora"
               name="hora"
@@ -100,26 +112,30 @@ export default function Reservar() {
               options={horas}
               required
               value={hora}
-              onChange={(e) => setHora(e.target.value)}
+              onValueChange={setHora}
               dependsOnValue={viaje}
             />
           </div>
+
           <div>
-            <div className="mt-8">
+            <div className="">
               <FormSelect
                 id="asientos"
                 name="asientos"
                 label="🪑 Asientos para reservar"
                 options={asientos}
-                onChange={(e) => setAsiento(Number(e.target.value))}
+                onValueChange={(value) => setAsiento(Number(value))}
                 required
               />
             </div>
-            <p className="mt-4">
-              Costo por asiento:{" "}
+          </div>
+          <div className="border p-4 mt-4">
+            <p className="">
+              Costo del viaje:{" "}
               {paquetes.find((elm) => elm.value == viaje)!.price}
             </p>
-            <p className="mt-4">Total: {calculateTotal()}</p>
+            <p className="">Total de asientos: {asiento}</p>
+            <p className="mt-2 font-bold">Total a pagar: {calculateTotal()}</p>
           </div>
 
           <Button type="submit" className="btn">

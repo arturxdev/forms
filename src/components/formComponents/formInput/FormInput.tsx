@@ -42,19 +42,12 @@ export const FormInput: React.FC<FormInputProps> = ({
   onBlur,
   onFocus,
 }) => {
-  const defaultInputClasses =
-    "rounded-xl border-zinc-200 bg-white text-zinc-900 placeholder-zinc-400 focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400";
-  const defaultLabelClasses = "text-zinc-800";
-
-  const finalInputClasses = `${defaultInputClasses} ${inputClassName}`.trim();
-  const finalLabelClasses = `${defaultLabelClasses} ${labelClassName}`.trim();
-
   const inputWithIcon = Icon && (
     <div className="relative">
       <Icon
         className={`absolute ${
           iconPosition === "left" ? "left-3" : "right-3"
-        } top-1/2 transform -translate-y-1/2 h-4 w-4 text-zinc-400`}
+        } top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground`}
       />
       <Input
         id={id}
@@ -69,7 +62,7 @@ export const FormInput: React.FC<FormInputProps> = ({
         onFocus={onFocus}
         className={`${
           iconPosition === "left" ? "pl-10" : "pr-10"
-        } ${finalInputClasses}`}
+        } ${inputClassName}`}
       />
     </div>
   );
@@ -86,17 +79,17 @@ export const FormInput: React.FC<FormInputProps> = ({
       onChange={onChange}
       onBlur={onBlur}
       onFocus={onFocus}
-      className={finalInputClasses}
+      className={inputClassName}
     />
   );
 
   return (
     <div className={`space-y-2 ${className}`}>
-      <Label htmlFor={id} className={finalLabelClasses}>
-        {label} {required && <span className="text-red-500">*</span>}
+      <Label htmlFor={id} className={labelClassName}>
+        {label} {required && <span className="text-destructive">*</span>}
       </Label>
       {Icon ? inputWithIcon : inputWithoutIcon}
-      {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
+      {error && <p className="text-sm text-destructive">{error}</p>}
     </div>
   );
-}; 
+};
