@@ -12,7 +12,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   className = "",
 }) => {
   return (
-    <div className={`px-6 pt-6 ${className}`}>
+    <div className={`pt-6 ${className}`}>
       <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
         {title}
       </h1>
