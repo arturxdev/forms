@@ -36,12 +36,11 @@ export const FormDatePicker: React.FC<FormDatePickerProps> = ({
   id,
   name,
   label,
-  placeholder = "Pick a date",
+  placeholder = "Selecciona una fecha",
   required = false,
   disabled = false,
   className = "",
   buttonClassName = "",
-  labelClassName = "",
   error,
   value,
   onChange,
@@ -63,10 +62,10 @@ export const FormDatePicker: React.FC<FormDatePickerProps> = ({
 
   return (
     <div className={`space-y-2 ${className}`}>
-      <Label htmlFor={id} className={cn("label-title", labelClassName)}>
+      <span className="label-title">
         {label}
         {required && <span className="text-destructive">*</span>}
-      </Label>
+      </span>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -78,7 +77,7 @@ export const FormDatePicker: React.FC<FormDatePickerProps> = ({
             onBlur={onBlur}
             onFocus={onFocus}
             className={cn(
-              "data-[empty=true]:text-muted-foreground w-full justify-start text-left font-normal sm:text-xl",
+              "data-[empty=true]:text-muted-white w-full justify-start text-left font-normal",
               buttonClassName
             )}
           >

@@ -5,23 +5,23 @@ interface PageImageHeaderProps {
   imageUrl: string;
   altText?: string;
   className?: string;
-  height?: string;
+  size?: string;
 }
 
 export const PageImageHeader: React.FC<PageImageHeaderProps> = ({
   imageUrl,
-  altText = "Encabezado de página",
+  altText = "Logo",
   className = "",
-  height = "h-40",
+  size = "w-24 h-24",
 }) => {
   return (
-    <div className={`${height} w-full overflow-hidden ${className}`}>
+    <div className={`${size} rounded-full overflow-hidden ${className}`}>
       <Image
         src={imageUrl}
         alt={altText}
         className="h-full w-full object-cover"
-        width={1600}
-        height={400}
+        width={96}
+        height={96}
         priority
         style={{ display: "block" }}
       />

@@ -127,10 +127,10 @@ export const FormSelect: React.FC<FormSelectProps> = ({
   );
 
   return (
-    <div className={`space-y-2 ${className}`}>
-      <Label htmlFor={id} className="label-title">
+    <div className={`${className}`}>
+      <span className="label-title">
         {label} {required && <span className="text-destructive">*</span>}
-      </Label>
+      </span>
       {Icon ? selectWithIcon : selectWithoutIcon}
       {error && <p className="text-sm text-destructive">{error}</p>}
     </div>
