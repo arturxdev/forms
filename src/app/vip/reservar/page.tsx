@@ -66,14 +66,13 @@ export default function Reservar() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-4xl rounded-2xl shadow-xl border border-zinc-100 overflow-hidden bg-card">
         {/* Header con imagen */}
-
+        <PageImageHeader
+          altText="Encabezado minimalista"
+          imageUrl="/logo-vip.jpeg"
+        />
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-6">
           {/* Nueva sección - Dirección donde se instalará el servicio */}
-          <PageImageHeader
-            altText="Encabezado minimalista"
-            imageUrl="/logo-vip.jpeg"
-          />
           <PageHeader title="Reserva un viaje" subtitle="" />
           <div className="border-t border-zinc-200 ">
             {/* Paquete a contratar (ancho completo) */}
