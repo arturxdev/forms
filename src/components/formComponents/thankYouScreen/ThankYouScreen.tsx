@@ -8,8 +8,8 @@ export default function ThankYouScreen({
   description,
 }: ThankYouScreenProps) {
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-white border border-zinc-100 shadow-xl rounded-2xl px-6 sm:px-10 py-14 text-center">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl bg-card border border-zinc-100 shadow-xl rounded-2xl px-6 sm:px-10 py-14 text-center">
         {/* Icono de éxito */}
         <div className="mx-auto mb-6 h-14 w-14 rounded-full border border-zinc-200 flex items-center justify-center">
           <svg
