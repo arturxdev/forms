@@ -1,5 +1,4 @@
-import React from "react";
-import { Label } from "../../ui/label";
+import React, { forwardRef } from "react";
 import {
   Select,
   SelectContent,
@@ -18,8 +17,6 @@ export interface SelectOption {
 }
 
 export interface FormSelectProps {
-  id: string;
-  name: string;
   label: string;
   options: SelectOption[];
   placeholder?: string;
@@ -38,40 +35,76 @@ export interface FormSelectProps {
   dependsOnValue?: string;
 }
 
-export const FormSelect: React.FC<FormSelectProps> = ({
-  id,
-  name,
-  label,
-  options,
-  placeholder,
-  required = false,
-  disabled = false,
-  className = "",
-  selectClassName = "",
-  labelClassName = "",
-  icon: Icon,
-  iconPosition = "left",
-  error,
-  value,
-  onValueChange,
-  onOpenChange,
-  dependsOnValue,
-}) => {
-  const visibleOptions = React.useMemo(() => {
-    return options.filter((option) => {
-      if (!option.if || option.if.length === 0) return true;
-      if (dependsOnValue === undefined || dependsOnValue === null) return false;
-      return option.if.includes(dependsOnValue);
-    });
-  }, [options, dependsOnValue]);
+export const FormSelect = forwardRef<HTMLButtonElement, FormSelectProps>(
+  (
+    {
+      label,
+      options,
+      placeholder,
+      required = false,
+      disabled = false,
+      className = "",
+      selectClassName = "",
+      labelClassName = "",
+      icon: Icon,
+      iconPosition = "left",
+      error,
+      value,
+      onValueChange,
+      onOpenChange,
+      dependsOnValue,
+      ...props
+    },
+    ref
+  ) => {
+    const visibleOptions = React.useMemo(() => {
+      return options.filter((option) => {
+        if (!option.if || option.if.length === 0) return true;
+        if (dependsOnValue === undefined || dependsOnValue === null)
+          return false;
+        return option.if.includes(dependsOnValue);
+      });
+    }, [options, dependsOnValue]);
 
-  const selectWithIcon = Icon && (
-    <div className="relative">
-      <Icon
-        className={`absolute ${
-          iconPosition === "left" ? "left-3" : "right-3"
-        } top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10`}
-      />
+    const selectWithIcon = Icon && (
+      <div className="relative">
+        <Icon
+          className={`absolute ${
+            iconPosition === "left" ? "left-3" : "right-3"
+          } top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10`}
+        />
+        <Select
+          value={value}
+          onValueChange={onValueChange}
+          onOpenChange={onOpenChange}
+          disabled={disabled}
+          required={required}
+        >
+          <SelectTrigger
+            ref={ref}
+            className={`w-full ${
+              iconPosition === "left" ? "pl-10" : "pr-10"
+            } ${selectClassName}`}
+            {...props}
+          >
+            <SelectValue placeholder={placeholder} />
+          </SelectTrigger>
+          <SelectContent>
+            {visibleOptions.map((option) => (
+              <SelectItem
+                key={option.value}
+                value={option.value}
+                disabled={option.disabled}
+              >
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    );
+
+    const selectWithoutIcon = (
       <Select
         value={value}
         onValueChange={onValueChange}
@@ -80,9 +113,9 @@ export const FormSelect: React.FC<FormSelectProps> = ({
         required={required}
       >
         <SelectTrigger
-          className={`w-full ${
-            iconPosition === "left" ? "pl-10" : "pr-10"
-          } ${selectClassName}`}
+          ref={ref}
+          className={`w-full ${selectClassName}`}
+          {...props}
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
@@ -98,41 +131,18 @@ export const FormSelect: React.FC<FormSelectProps> = ({
           ))}
         </SelectContent>
       </Select>
-    </div>
-  );
+    );
 
-  const selectWithoutIcon = (
-    <Select
-      value={value}
-      onValueChange={onValueChange}
-      onOpenChange={onOpenChange}
-      disabled={disabled}
-      required={required}
-    >
-      <SelectTrigger className={`w-full ${selectClassName}`}>
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
-      <SelectContent>
-        {visibleOptions.map((option) => (
-          <SelectItem
-            key={option.value}
-            value={option.value}
-            disabled={option.disabled}
-          >
-            {option.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
+    return (
+      <div className={`space-y-2 ${className}`}>
+        <span className={labelClassName}>
+          {label} {required && <span className="text-destructive">*</span>}
+        </span>
+        {Icon ? selectWithIcon : selectWithoutIcon}
+        {error && <p className="text-sm text-red-500">{error}</p>}
+      </div>
+    );
+  }
+);
 
-  return (
-    <div className={`${className}`}>
-      <span className="label-title">
-        {label} {required && <span className="text-destructive">*</span>}
-      </span>
-      {Icon ? selectWithIcon : selectWithoutIcon}
-      {error && <p className="text-sm text-destructive">{error}</p>}
-    </div>
-  );
-};
+FormSelect.displayName = "FormSelect";

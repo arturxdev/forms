@@ -161,16 +161,12 @@ export default function ContactForm() {
           {/* Primera fila - Nombre y Apellido */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormInput
-              id="nombre"
-              name="nombre"
               label="Nombre"
               type="text"
               required
               placeholder="Tu nombre"
             />
             <FormInput
-              id="apellido"
-              name="apellido"
               label="Apellido"
               type="text"
               required
@@ -180,16 +176,8 @@ export default function ContactForm() {
 
           {/* Segunda fila - Email y Teléfono */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormEmail
-              id="email"
-              name="email"
-              label="Email"
-              required
-              placeholder="tu@correo.com"
-            />
+            <FormEmail label="Email" required placeholder="tu@correo.com" />
             <FormPhone
-              id="telefono"
-              name="telefono"
               label="Teléfono"
               required
               placeholder="+57 300 123 4567"
@@ -199,16 +187,12 @@ export default function ContactForm() {
           {/* Tercera fila - Número de identificación y Estrato */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormInput
-              id="identificacion"
-              name="identificacion"
               label="Número de identificación"
               type="text"
               required
               placeholder="CC 12345678"
             />
             <FormInput
-              id="estrato"
-              name="estrato"
               label="Estrato"
               type="text"
               required
@@ -218,8 +202,6 @@ export default function ContactForm() {
 
           {/* Cuarta fila - Dirección (ancho completo) */}
           <FormInput
-            id="direccion"
-            name="direccion"
             label="Dirección"
             type="text"
             required
@@ -246,8 +228,6 @@ export default function ContactForm() {
             {/* Dirección del servicio (ancho completo) */}
             <div className="mb-6">
               <FormInput
-                id="direccionServicio"
-                name="direccionServicio"
                 label="Dirección del servicio"
                 type="text"
                 required
@@ -258,16 +238,12 @@ export default function ContactForm() {
             {/* Departamento y Municipio (2 columnas) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <FormInput
-                id="departamento"
-                name="departamento"
                 label="Departamento"
                 type="text"
                 required
                 placeholder="Ej. Antioquia"
               />
               <FormInput
-                id="municipio"
-                name="municipio"
                 label="Municipio"
                 type="text"
                 required

@@ -16,8 +16,6 @@ export const FormPhoneExamples: React.FC = () => {
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-zinc-800">Ejemplo Básico</h3>
         <FormPhone
-          id="phone-basic"
-          name="phone-basic"
           label="Teléfono Básico"
           placeholder="+57 300 123 4567"
           value={phone1}
@@ -31,8 +29,6 @@ export const FormPhoneExamples: React.FC = () => {
           Con Código de País Personalizado
         </h3>
         <FormPhone
-          id="phone-us"
-          name="phone-us"
           label="Teléfono US"
           countryCode="+1"
           placeholder="+1 555 123 4567"
@@ -50,8 +46,6 @@ export const FormPhoneExamples: React.FC = () => {
           Con Callback de Validación
         </h3>
         <FormPhone
-          id="phone-validation"
-          name="phone-validation"
           label="Teléfono con Validación"
           placeholder="+57 300 123 4567"
           value={phone3}
@@ -78,8 +72,6 @@ export const FormPhoneExamples: React.FC = () => {
           Con Longitudes Personalizadas
         </h3>
         <FormPhone
-          id="phone-custom-length"
-          name="phone-custom-length"
           label="Teléfono Corto"
           minLength={8}
           maxLength={10}
@@ -98,8 +90,6 @@ export const FormPhoneExamples: React.FC = () => {
           Sin Mensajes de Validación
         </h3>
         <FormPhone
-          id="phone-no-messages"
-          name="phone-no-messages"
           label="Teléfono Sin Mensajes"
           placeholder="+57 300 123 4567"
           showValidationMessage={false}
@@ -115,8 +105,6 @@ export const FormPhoneExamples: React.FC = () => {
           Con Error Personalizado
         </h3>
         <FormPhone
-          id="phone-custom-error"
-          name="phone-custom-error"
           label="Teléfono con Error Personalizado"
           placeholder="+57 300 123 4567"
           error="Este número ya está registrado en el sistema"
@@ -152,4 +140,4 @@ export const FormPhoneExamples: React.FC = () => {
       </div>
     </div>
   );
-}; 
+};

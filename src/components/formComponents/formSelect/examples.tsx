@@ -54,8 +54,6 @@ export const SelectExamples = () => {
           1. Select Básico
         </h2>
         <FormSelect
-          id="paquete-basico"
-          name="paquete-basico"
           label="Paquete de Internet"
           options={paquetesInternet}
           required
@@ -69,8 +67,6 @@ export const SelectExamples = () => {
           2. Select con Icono
         </h2>
         <FormSelect
-          id="pais"
-          name="pais"
           label="País de residencia"
           options={paises}
           icon={Globe}
@@ -85,8 +81,6 @@ export const SelectExamples = () => {
           3. Select con Opciones Deshabilitadas
         </h2>
         <FormSelect
-          id="estado"
-          name="estado"
           label="Estado de la cuenta"
           options={estados}
           icon={User}
@@ -101,8 +95,6 @@ export const SelectExamples = () => {
           4. Select Personalizado
         </h2>
         <FormSelect
-          id="categoria"
-          name="categoria"
           label="Categoría del producto"
           options={categorias}
           icon={Package}
@@ -121,8 +113,6 @@ export const SelectExamples = () => {
           5. Select con Error
         </h2>
         <FormSelect
-          id="departamento"
-          name="departamento"
           label="Departamento"
           options={[
             { value: "antioquia", label: "Antioquia" },

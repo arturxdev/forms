@@ -1,13 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { ThankYouScreen } from "@/components/formComponents/thankYouScreen";
-import { useState } from "react";
-// import { toast } from "sonner";
+import { useEffect, useState } from "react";
 import {
   FormSelect,
   FormDatePicker,
   PageHeader,
   PageImageHeader,
+  DebugInfo,
 } from "@/components/formComponents";
 import data from "../utils/data.json";
 
@@ -20,7 +20,23 @@ export default function Reservar() {
   const [hora, setHora] = useState<string>("");
   const [asiento, setAsiento] = useState<number>(1);
   const [fechaViaje, setFechaViaje] = useState<Date>();
+  const [queryParams, setQueryParams] = useState<Record<string, string>>({});
 
+  useEffect(() => {
+    const params: Record<string, string> = {};
+    const urlSearchParams = new URLSearchParams(window.location.search);
+
+    urlSearchParams.forEach((value: string, key: string) => {
+      params[key] = value;
+    });
+
+    setQueryParams(params);
+
+    // Log de los parámetros capturados para debugging
+    if (Object.keys(params).length > 0) {
+      console.log("Query parameters capturados:", params);
+    }
+  }, []);
   const calculateTotal = () => {
     const price = paquetes.find((elm) => elm.value == viaje)!.price;
     return price * asiento;
@@ -70,13 +86,15 @@ export default function Reservar() {
           altText="Encabezado minimalista"
           imageUrl="/logo-vip.jpeg"
         />
+        <DebugInfo
+          queryParams={queryParams}
+          debug={queryParams.debug === "true"}
+        />
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-6">
           {/* Nueva sección - Dirección donde se instalará el servicio */}
           <PageHeader title="Reserva un viaje" subtitle="" />
           <FormSelect
-            id="viaje"
-            name="Viaje"
             label="🚗 Viaje"
             options={paquetes}
             required
@@ -97,8 +115,6 @@ export default function Reservar() {
             onChange={setFechaViaje}
           />
           <FormSelect
-            id="hora"
-            name="hora"
             label="⏰️ Hora del viaje"
             options={horas}
             required
@@ -108,8 +124,6 @@ export default function Reservar() {
           />
 
           <FormSelect
-            id="asientos"
-            name="asientos"
             label="🪑 Asientos para reservar"
             options={asientos}
             onValueChange={(value) => setAsiento(Number(value))}

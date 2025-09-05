@@ -15,8 +15,6 @@ export const FormEmailExamples: React.FC = () => {
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-zinc-800">Ejemplo Básico</h3>
         <FormEmail
-          id="email-basic"
-          name="email-basic"
           label="Email Básico"
           placeholder="tu@correo.com"
           value={email1}
@@ -30,8 +28,6 @@ export const FormEmailExamples: React.FC = () => {
           Con Callback de Validación
         </h3>
         <FormEmail
-          id="email-validation"
-          name="email-validation"
           label="Email con Validación"
           placeholder="email@ejemplo.com"
           value={email2}
@@ -58,8 +54,6 @@ export const FormEmailExamples: React.FC = () => {
           Sin Mensajes de Validación
         </h3>
         <FormEmail
-          id="email-no-messages"
-          name="email-no-messages"
           label="Email Sin Mensajes"
           placeholder="email@dominio.com"
           value={email3}
@@ -77,8 +71,6 @@ export const FormEmailExamples: React.FC = () => {
           Con Error Personalizado
         </h3>
         <FormEmail
-          id="email-custom-error"
-          name="email-custom-error"
           label="Email con Error Personalizado"
           placeholder="email@ejemplo.com"
           error="Este email ya está registrado en el sistema"

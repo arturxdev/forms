@@ -1,11 +1,9 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { Input } from "../../ui/input";
-import { Label } from "../../ui/label";
 import { LucideIcon } from "lucide-react";
 
 export interface FormInputProps {
-  id: string;
-  name: string;
+  name?: string;
   label: string;
   type?: "text" | "email" | "tel" | "password" | "number" | "url";
   placeholder?: string;
@@ -23,34 +21,58 @@ export interface FormInputProps {
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-export const FormInput: React.FC<FormInputProps> = ({
-  id,
-  name,
-  label,
-  type = "text",
-  placeholder,
-  required = false,
-  disabled = false,
-  className = "",
-  inputClassName = "",
-  labelClassName = "",
-  icon: Icon,
-  iconPosition = "left",
-  error,
-  value,
-  onChange,
-  onBlur,
-  onFocus,
-}) => {
-  const inputWithIcon = Icon && (
-    <div className="relative">
-      <Icon
-        className={`absolute ${
-          iconPosition === "left" ? "left-3" : "right-3"
-        } top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground`}
-      />
+export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
+  (
+    {
+      name,
+      label,
+      type = "text",
+      placeholder,
+      required = false,
+      disabled = false,
+      className = "",
+      inputClassName = "",
+      labelClassName = "",
+      icon: Icon,
+      iconPosition = "left",
+      error,
+      value,
+      onChange,
+      onBlur,
+      onFocus,
+      ...props
+    },
+    ref
+  ) => {
+    const inputWithIcon = Icon && (
+      <div className="relative">
+        <Icon
+          className={`absolute ${
+            iconPosition === "left" ? "left-3" : "right-3"
+          } top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground`}
+        />
+        <Input
+          ref={ref}
+          name={name}
+          type={type}
+          required={required}
+          disabled={disabled}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          className={`${
+            iconPosition === "left" ? "pl-10" : "pr-10"
+          } ${inputClassName}`}
+          {...props}
+        />
+      </div>
+    );
+
+    const inputWithoutIcon = (
       <Input
-        id={id}
+        ref={ref}
         name={name}
         type={type}
         required={required}
@@ -60,36 +82,21 @@ export const FormInput: React.FC<FormInputProps> = ({
         onChange={onChange}
         onBlur={onBlur}
         onFocus={onFocus}
-        className={`${
-          iconPosition === "left" ? "pl-10" : "pr-10"
-        } ${inputClassName}`}
+        className={inputClassName}
+        {...props}
       />
-    </div>
-  );
+    );
 
-  const inputWithoutIcon = (
-    <Input
-      id={id}
-      name={name}
-      type={type}
-      required={required}
-      disabled={disabled}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      onBlur={onBlur}
-      onFocus={onFocus}
-      className={inputClassName}
-    />
-  );
+    return (
+      <div className={`space-y-2 ${className}`}>
+        <span className={labelClassName}>
+          {label} {required && <span className="text-destructive">*</span>}
+        </span>
+        {Icon ? inputWithIcon : inputWithoutIcon}
+        {error && <p className="text-sm text-red-500">{error}</p>}
+      </div>
+    );
+  }
+);
 
-  return (
-    <div className={`space-y-2 ${className}`}>
-      <Label htmlFor={id} className={labelClassName}>
-        {label} {required && <span className="text-destructive">*</span>}
-      </Label>
-      {Icon ? inputWithIcon : inputWithoutIcon}
-      {error && <p className="text-sm text-destructive">{error}</p>}
-    </div>
-  );
-};
+FormInput.displayName = "FormInput";
