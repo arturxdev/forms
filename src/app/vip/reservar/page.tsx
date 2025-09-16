@@ -89,7 +89,7 @@ export default function Reservar() {
   const onSubmit = async (formData: FormData) => {
     setErrorMessage("");
     try {
-      let URL = "https://vip-cars-n8n.omm9hu.easypanel.host/webhook-test/viaje";
+      let URL = "https://vip-cars-n8n.omm9hu.easypanel.host/webhook/viaje";
       const payload = new FormData();
 
       // 1. Agregar datos del formulario
