@@ -22,7 +22,9 @@ const formSchema = z.object({
   dni: z.string().min(1, "DNI requerido"),
   recommended: z.string(),
   viaje: z.string().min(1, "Selecciona un viaje"),
-  hora: z.string({ error: "Selecciona una hora de viaje" }).min(1, "Selecciona una hora"),
+  hora: z
+    .string({ error: "Selecciona una hora de viaje" })
+    .min(1, "Selecciona una hora"),
   asientos: z.string().min(1, "Selecciona número de asientos"),
   fechaViaje: z.string().min(1, "Selecciona una fecha"),
 });
@@ -39,21 +41,6 @@ export default function Registro() {
   const [cedulaFile, setCedulaFile] = useState<File | null>(null);
   const [comprobanteFile, setComprobanteFile] = useState<File | null>(null);
 
-  useEffect(() => {
-    const params: Record<string, string> = {};
-    const urlSearchParams = new URLSearchParams(window.location.search);
-
-    urlSearchParams.forEach((value: string, key: string) => {
-      params[key] = value;
-    });
-
-    setQueryParams(params);
-
-    // Log de los parámetros capturados para debugging
-    if (Object.keys(params).length > 0) {
-      console.log("Query parameters capturados:", params);
-    }
-  }, []);
   // Configuración del formulario
   const {
     register,
@@ -70,6 +57,21 @@ export default function Registro() {
     },
   });
 
+  useEffect(() => {
+    const params: Record<string, string> = {};
+    const urlSearchParams = new URLSearchParams(window.location.search);
+
+    urlSearchParams.forEach((value: string, key: string) => {
+      params[key] = value;
+    });
+
+    setQueryParams(params);
+
+    // Log de los parámetros capturados para debugging
+    if (Object.keys(params).length > 0) {
+      console.log("Query parameters capturados:", params);
+    }
+  }, []);
   // Datos del JSON
   const { paquetes, asientos, horas } = data;
 
@@ -104,7 +106,7 @@ export default function Registro() {
     setErrorMessage("");
 
     try {
-      let URL = "https://vip-cars-n8n.omm9hu.easypanel.host/webhook-test/registrar"
+      let URL = "https://vip-cars-n8n.omm9hu.easypanel.host/webhook/registrar";
       // Crear FormData para archivos y datos
       const payload = new FormData();
 
@@ -118,7 +120,7 @@ export default function Registro() {
       payload.append(
         "precioUnitario",
         paquetes.find((p) => p.value === formData.viaje)?.price.toString() ||
-        "0"
+          "0"
       );
 
       // 3. Agregar archivos si existen
@@ -146,13 +148,10 @@ export default function Registro() {
         console.log("URL final con query params:", URL);
       }
       // 4. Enviar todo en una sola petición
-      const response = await fetch(
-        URL,
-        {
-          method: "POST",
-          body: payload,
-        }
-      );
+      const response = await fetch(URL, {
+        method: "POST",
+        body: payload,
+      });
 
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -211,7 +210,6 @@ export default function Registro() {
             subtitle="Este formulario solo se llenará la primera vez"
           />
 
-
           {/* Sección 1: Datos personales */}
           <h3 className="text-lg font-bold">1. Registra tus datos</h3>
 
@@ -243,8 +241,8 @@ export default function Registro() {
             🪪 Por seguridad, necesitamos validar tu identidad.
             <br />
             📸 Debes enviar una foto tuya junto a tu DNI.
-            <br />
-            ✅ Este proceso se realiza solo la primera vez que te registres, para garantizar la seguridad de tu cuenta.
+            <br />✅ Este proceso se realiza solo la primera vez que te
+            registres, para garantizar la seguridad de tu cuenta.
           </p>
           <FileUploader
             name="Cedula"
@@ -299,9 +297,7 @@ export default function Registro() {
           />
 
           {/* Resumen de precio */}
-          <div
-            className="border p-4 rounded bg-accent"
-          >
+          <div className="border p-4 rounded bg-accent">
             <p className="font-semibold mb-2">Resumen:</p>
             <p>
               Precio por asiento: $
@@ -316,7 +312,7 @@ export default function Registro() {
             3. Datos para transferencia
           </h3>
 
-          <div className="border p-4 rounded bg-secondary" >
+          <div className="border p-4 rounded bg-secondary">
             <h4 className="font-semibold mb-2">Información bancaria:</h4>
             <p>
               <strong>Titular:</strong> David Chaves
@@ -350,9 +346,10 @@ export default function Registro() {
             disabled={isSubmitting} // 🎯 Usar isSubmitting
             className={`
               w-full h-12 text-lg font-semibold transition-all duration-200
-              ${isSubmitting
-                ? "bg-gray-400 cursor-not-allowed opacity-75"
-                : "btn hover:scale-[1.02] active:scale-[0.98]"
+              ${
+                isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed opacity-75"
+                  : "btn hover:scale-[1.02] active:scale-[0.98]"
               }
             `}
           >
@@ -377,16 +374,18 @@ export default function Registro() {
                   <p className="text-sm text-red-700 font-medium">
                     ⚠️ Error al enviar
                   </p>
-                  <p className="text-sm text-red-600 mt-1">Contactate por medio de Whatsapp</p>
+                  <p className="text-sm text-red-600 mt-1">
+                    Contactate por medio de Whatsapp
+                  </p>
                 </div>
               </div>
             </div>
           )}
 
-
           <p
-            className={`text-xs text-center transition-opacity duration-200 ${isSubmitting ? "text-gray-400" : "text-gray-500"
-              }`}
+            className={`text-xs text-center transition-opacity duration-200 ${
+              isSubmitting ? "text-gray-400" : "text-gray-500"
+            }`}
           >
             Al enviar, aceptas que nos contactemos contigo.
           </p>
