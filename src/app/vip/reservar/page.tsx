@@ -47,8 +47,7 @@ export default function Reservar() {
   const horas = data.horas;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    const URL =
-      "https://painfully-feasible-sunfish.ngrok-free.app/webhook-test/b92da1ad-3155-44e0-88d2-2ef5dbcf41db";
+    const URL = "https://vip-cars-n8n.omm9hu.easypanel.host/webhook-test/viaje";
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
