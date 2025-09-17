@@ -106,8 +106,7 @@ export default function Registro() {
     setErrorMessage("");
 
     try {
-      let URL =
-        "https://vip-cars-n8n.omm9hu.easypanel.host/webhook-test/registrar";
+      let URL = "https://vip-cars-n8n.omm9hu.easypanel.host/webhook/registrar";
       // Crear FormData para archivos y datos
       const payload = new FormData();
 
