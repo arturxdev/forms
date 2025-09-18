@@ -28,8 +28,8 @@
     { "value": "manta-sd", "label": " Manta → Santo Domingo", "price": 25 },
     { "value": "sd-gye", "label": "Santo Domingo → Guayaquil", "price": 30 },
     { "value": "gye-sd", "label": "Guayaquil → Santo Domingo", "price": 30 },
-    { "value": "quito-gye", "label": " Quito → Guayaquil", "price": 30 },
-    { "value": "gye-quito", "label": " Guayaquil → Quito", "price": 30 },
+    { "value": "quito-gye", "label": " Quito → Guayaquil", "price": 47 },
+    { "value": "gye-quito", "label": " Guayaquil → Quito", "price": 47 },
     { "value": "quito-manta", "label": " Quito → Manta", "price": 42 },
     { "value": "manta-quito", "label": " Manta → Quito", "price": 42 }
   ],
